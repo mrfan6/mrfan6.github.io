@@ -432,7 +432,7 @@
       
         
           
-            <h2 id="ICMP隧道模式使用"><a href="#ICMP隧道模式使用" class="headerlink" title="ICMP隧道模式使用"></a>ICMP隧道模式使用</h2><h3 id="ICMP隧道模式简介"><a href="#ICMP隧道模式简介" class="headerlink" title="ICMP隧道模式简介"></a>ICMP隧道模式简介</h3><p>ICMP一般用于检测网络的可通性, 所以一般在防火墙设备上都不会用策略去禁止它(ping),这也就使得了有很大的可能性去使用ICMP隧道进行相应的攻击,达到一种伪装. 而能达到这种攻击的原因是因为ICMP报文结构中,有数据部分是可控的,所以可以构造相应的攻击语句.</p>
+            <h3 id="ICMP隧道模式简介"><a href="#ICMP隧道模式简介" class="headerlink" title="ICMP隧道模式简介"></a>ICMP隧道模式简介</h3><p>ICMP一般用于检测网络的可通性, 所以一般在防火墙设备上都不会用策略去禁止它(ping),这也就使得了有很大的可能性去使用ICMP隧道进行相应的攻击,达到一种伪装. 而能达到这种攻击的原因是因为ICMP报文结构中,有数据部分是可控的,所以可以构造相应的攻击语句.</p>
 <h3 id="1-icmpsh使用"><a href="#1-icmpsh使用" class="headerlink" title="1.icmpsh使用"></a>1.icmpsh使用</h3><p>下载地址:<a target="_blank" rel="noopener" href="https://github.com/k1132/icmpsh">GitHub - k1132/icmpsh: Simple reverse ICMP shell</a></p>
 <p>py使用前需安装Impacket依赖库</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/SecureAuthCorp/impacket.git</span><br><span class="line">cd impacket</span><br><span class="line">sudo python setup.py  install</span><br></pre></td></tr></table></figure>
